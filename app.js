@@ -3,6 +3,7 @@ import cors from 'cors';
 import * as path from 'path';
 import { get } from './models.js';
 import { fileURLToPath } from 'url';
+import getRadius from './opentrip';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -19,6 +20,11 @@ app.get('*', (req, res) => {
 
 app.get('/', async (req, res) => {
   const data = await get();
+  res.json(data);
+});
+
+app.get('/something', async (req, res) => {
+  const data = await getRadius('london');
   res.json(data);
 });
 

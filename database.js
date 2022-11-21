@@ -9,11 +9,11 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 const dbConnect = async () => {
   await client.connect();
   try {
-    const db = client.db("holidayPlanner");
+    const db = client.db('holidayPlanner');
     return db;
   } catch (err) {
     console.log(err);
   }
-}
-  
+};
+
 export default dbConnect;
