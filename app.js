@@ -3,7 +3,7 @@ import cors from 'cors';
 import * as path from 'path';
 import { get } from './models.js';
 import { fileURLToPath } from 'url';
-import getRadius from './opentrip';
+import { getRadius, getWiki } from './opentrip.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -14,17 +14,27 @@ app.use(cors());
 app.use(express.json());
 
 app.use(express.static(path.resolve(__dirname, './client/build')));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
-});
+// app.get('*', (req, res) => {
+//   res.sendFile(path.join(__dirname, "/client/public/index.html"));
+
+//   // res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+// });
 
 app.get('/', async (req, res) => {
   const data = await get();
   res.json(data);
 });
 
-app.get('/something', async (req, res) => {
-  const data = await getRadius('london');
+app.get('/api/:query', async (req, res) => {
+  const city = req.params.query;
+  const data = await getRadius(city);
+  res.json(data);
+});
+
+app.get('/api/sites/:id', async (req, res) => {
+  // const id = req.params.id;
+  const data = await getWiki('Q2073943');
+  console.log(data)
   res.json(data);
 });
 

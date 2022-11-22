@@ -22,38 +22,38 @@ const getRadius = async query => {
 
   try {
     if (lon && lat) {
-      //https://api.opentripmap.com/0.1/en/places/radius?radius=1000&lon=4.897070&lat=52.377956&kinds=Cultural&apikey=5ae2e3f221c38a28845f05b6801bf7a81426f0f05a98e2455f5e262e
-
-      let url = `https://api.opentripmap.com/0.1/en/places/radius?radius=1000&lon=${lon}&lat=${lat}&kinds=cultural%2Cnatural%2Chistoric&apikey=${apiKey}`;
+      const url = `https://api.opentripmap.com/0.1/en/places/radius?radius=1000&lon=${lon}&lat=${lat}&kinds=cultural%2Cnatural%2Chistoric&apikey=${apiKey}`;
       const results = await axios(url);
-      return results.data.features;
+      return {
+        lon: lon,
+        lat: lat,
+        sites: results.data.features
+      };
     }
   } catch (err) {
     console.log(err);
   }
 };
 
-// const getWiki = async wikiData => {
-//   const { lon, lat } = await getGeoname(query);
-
-//   try {
-//     if (wikiData) {
-//       //https://api.opentripmap.com/0.1/en/places/radius?radius=1000&lon=4.897070&lat=52.377956&kinds=Cultural&apikey=5ae2e3f221c38a28845f05b6801bf7a81426f0f05a98e2455f5e262e
-
-//       let url = `https://www.wikidata.org/wiki/Special:EntityData/${wikiData}`;
-//       const results = await axios(url);
-//       return results.data.features;
-//     }
-//   } catch (err) {
-//     console.log(err);
-//   }
-// };
-
-
-
+const getWiki = async wikiData => {
+  try {
+    if (wikiData) {
+      const url = `https://api.opentripmap.com/0.1/en/places/xid/${wikiData}?apikey=${apiKey}`;
+      const results = await axios(url);
+      // console.log(results)
+      return {
+        name: results.data.name,
+        image: results.data.image,
+        rate: results.data.rate,
+        text: results.data.wikipedia_extracts.text,
+      };
+    }
+  } catch (err) {
+    console.log(err);
+  }
+};
 
 
 // console.log(await getGeoname('London'), 'response');
-// console.log(await getMap());
-console.log(await getRadius('Utrecht'), 'response');
-export default getRadius;
+// console.log(await getWiki('Q2073943'));
+export { getRadius, getWiki };
