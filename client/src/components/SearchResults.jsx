@@ -16,13 +16,14 @@ const SearchResults = () => {
   })
 
   const { searchValue } = useContext(AppContext);
+  
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
   const [center, setCenter] = useState({
     lat: 0,
     lng: 0
   });
-
+  
   const getSites = async search => {
     const response = await axios.get(`/api/${search}`)
     return response;
@@ -32,7 +33,6 @@ const SearchResults = () => {
     const getData = async() => {
       if (searchValue) {
         const results = await getSites(searchValue);
-
         setCenter(center => ({
           ...center,
           lat: results.data.lat,
@@ -52,7 +52,7 @@ const SearchResults = () => {
   };
 
   const handleClick = async id => {
-    const response = await axios.get(`/api/search/${id}`);
+    const response = await axios.get(`/api/sites/${id}`);
     return response;
   }
 
@@ -73,7 +73,7 @@ const SearchResults = () => {
       {isLoaded &&  <GoogleMap
           onLoad={handleOnLoad}
           center={center}
-          zoom={15}
+          zoom={12}
           mapContainerStyle={{ width: '100%', height: '100%' }}
           options={{
             zoomControl: false,
@@ -92,7 +92,7 @@ const SearchResults = () => {
                 key={site.properties.xid}
                 position={obj}
                 id={site.properties.xid}
-                onClick={() => handleClick(site.properties.wikidata)}
+                onClick={() => handleClick(site.properties.xid)}
               />)
           })}
         </GoogleMap>}

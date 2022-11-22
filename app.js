@@ -32,10 +32,13 @@ app.get('/api/:query', async (req, res) => {
 });
 
 app.get('/api/sites/:id', async (req, res) => {
-  // const id = req.params.id;
-  const data = await getWiki('Q2073943');
-  console.log(data)
-  res.json(data);
+  try {
+    const id = req.params;
+    const data = await getWiki(id);
+    res.json(data);
+  } catch(e) {
+    console.error(e)
+  }
 });
 
 export default app;
