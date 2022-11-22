@@ -1,22 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
+import SearchResults from './components/SearchResults';
 
 function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Iliana, Dasha, Joyce, Sophia
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+        <SearchResults />
+        <p>Iliana, Dasha, Joyce, Sophia</p>
       </header>
     </div>
   );
