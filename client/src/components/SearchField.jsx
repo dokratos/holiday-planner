@@ -24,7 +24,7 @@ export default function SearchField() {
     <Paper
       component="form"
       sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
-      // onSubmit={handleSubmit}
+      onSubmit={handleSubmit}
     >
       <InputBase
         sx={{ ml: 1, flex: 1 }}
@@ -32,7 +32,7 @@ export default function SearchField() {
         inputProps={{ 'aria-label': 'search city' }}
         onChange={handleChange}
       />
-      <IconButton type="button" onClick={handleSubmit} sx={{ p: '10px' }} aria-label="search">
+      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
         <SearchIcon />
       </IconButton>
     </Paper>

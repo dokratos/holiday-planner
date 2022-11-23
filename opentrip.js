@@ -24,10 +24,14 @@ const getRadius = async query => {
     if (lon && lat) {
       const url = `https://api.opentripmap.com/0.1/en/places/radius?radius=1000&lon=${lon}&lat=${lat}&kinds=cultural%2Cnatural%2Chistoric&apikey=${apiKey}`;
       const results = await axios(url);
+      const filteredSites = results.data.features.filter(site => {
+        if (site.properties.name) return site;
+      });
+
       return {
         lon: lon,
         lat: lat,
-        sites: results.data.features
+        sites: filteredSites,
       };
     }
   } catch (err) {
@@ -36,18 +40,17 @@ const getRadius = async query => {
 };
 
 const getWiki = async wikiData => {
-  console.log(wikiData, 'this is my id')
   try {
     if (wikiData) {
       const url = `https://api.opentripmap.com/0.1/en/places/xid/${wikiData.id}?apikey=${apiKey}`;
-      console.log(url)
       const results = await axios(url);
-      console.log(results.data.name);
       return {
+        siteId: results.data.xid,
         name: results.data.name,
-        image: results.data.image,
+        image: results.data.preview?.source,
         rate: results.data.rate,
-        text: results.data.wikipedia_extracts.text,
+        text: results.data.wikipedia_extracts?.text,
+        point: results.data.point,
       };
     }
   } catch (err) {
@@ -55,7 +58,4 @@ const getWiki = async wikiData => {
   }
 };
 
-
-// console.log(await getGeoname('London'), 'response');
-// console.log(await getWiki('Q2073943'));
 export { getRadius, getWiki };

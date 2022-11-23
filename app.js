@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import * as path from 'path';
-import { get } from './models.js';
+import { get, updateFavorites, getFavorites, deleteOneFavorite } from './models.js';
 import { fileURLToPath } from 'url';
 import { getRadius, getWiki } from './opentrip.js';
 
@@ -35,6 +35,35 @@ app.get('/api/sites/:id', async (req, res) => {
   try {
     const id = req.params;
     const data = await getWiki(id);
+    res.json(data);
+  } catch(e) {
+    console.error(e)
+  }
+});
+
+const userID = '637e20cc974a8ad518c65a98';
+
+app.patch('/api/favorites', async (req, res) => {
+  try {
+    const data = await updateFavorites(userID, req.body);
+    res.json(data);
+  } catch(e) {
+    console.error(e)
+  }
+});
+
+app.get('/api/list/favorites', async (req, res) => {
+  try {
+    const data = await getFavorites(userID);
+    res.json(data);
+  } catch(e) {
+    console.error(e);
+  }
+});
+
+app.patch('/api/list/favorites', async (req, res) => {
+  try {
+    const data = await deleteOneFavorite(userID, req.body.id);
     res.json(data);
   } catch(e) {
     console.error(e)

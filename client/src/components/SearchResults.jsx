@@ -5,10 +5,11 @@ import {
   useJsApiLoader,
   GoogleMap,
   Marker,
-  Autocomplete,
+  InfoWindow,
 } from '@react-google-maps/api';
 import SearchField from './SearchField';
 import { AppContext } from '../AppProvider';
+import { Link } from "react-router-dom";
 
 const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
@@ -23,6 +24,7 @@ const SearchResults = () => {
     lat: 0,
     lng: 0
   });
+  const [isMarkerActive, setIsMarkerActive] = useState(null);
   
   const getSites = async search => {
     const response = await axios.get(`/api/${search}`)
@@ -51,10 +53,10 @@ const SearchResults = () => {
     setMap(map)
   };
 
-  const handleClick = async id => {
-    const response = await axios.get(`/api/sites/${id}`);
-    return response;
-  }
+  const handleMarkerClick = async (id) => {
+    if (id === isMarkerActive) return;
+    setIsMarkerActive(id);
+  };
 
   return (
     <>
@@ -69,11 +71,11 @@ const SearchResults = () => {
             opacity: [0.9, 0.8, 0.7],
           },
         }}
-      >
+        >
       {isLoaded &&  <GoogleMap
           onLoad={handleOnLoad}
           center={center}
-          zoom={12}
+          zoom={5}
           mapContainerStyle={{ width: '100%', height: '100%' }}
           options={{
             zoomControl: false,
@@ -81,7 +83,7 @@ const SearchResults = () => {
             mapTypeControl: false,
             fullscreenControl: false,
           }}
-        >
+          >
           {sites?.map(site => {
             const obj = {
               lng: site.geometry.coordinates[0],
@@ -92,8 +94,19 @@ const SearchResults = () => {
                 key={site.properties.xid}
                 position={obj}
                 id={site.properties.xid}
-                onClick={() => handleClick(site.properties.xid)}
-              />)
+                onClick={() => handleMarkerClick(site.properties.xid)}>
+                  {isMarkerActive === site.properties.xid ? (
+                    <InfoWindow>
+                      <>
+                        <h2>{site.properties.name}</h2>
+                        <button>
+                          <Link to={`/search/${site.properties.xid}`}>Learn more</Link>
+                        </button>
+                      </>
+                    </InfoWindow>
+                  ) : null }
+              </Marker>
+            )
           })}
         </GoogleMap>}
     </Box>

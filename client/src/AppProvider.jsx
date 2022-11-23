@@ -4,11 +4,14 @@ const AppContext = createContext();
 
 const AppProvider = ({ children }) => {
   const [searchValue, setSearchValue] = useState('');
+  const [siteData, setSiteData] = useState({});
 
   return (
     <AppContext.Provider value={{
       searchValue,
       setSearchValue,
+      siteData,
+      setSiteData,
     }}>
       {children}
     </AppContext.Provider>

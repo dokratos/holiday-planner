@@ -1,13 +1,19 @@
-import './App.css';
+import { Routes, Route } from 'react-router-dom';
 import SearchResults from './components/SearchResults';
+import Site from './components/Site';
+import Favorites from './components/Favorites';
+import NotFoundPage from './components/NotFoundPage';
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <SearchResults />
-        <p>Iliana, Dasha, Joyce, Sophia</p>
-      </header>
+      <Routes> 
+        <Route path="/" element={<SearchResults />}></Route>
+        <Route path="/search/:site" element={<Site />}></Route>
+        <Route path="/favorites" element={<Favorites />}></Route>
+        <Route path="*" element={<NotFoundPage />}></Route>
+      </Routes> 
     </div>
   );
 }
