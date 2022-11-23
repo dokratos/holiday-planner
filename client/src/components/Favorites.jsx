@@ -28,6 +28,7 @@ const Favorites = () => {
 
   return (
     <div>
+      <h1>Favorites</h1>
       {favorites?.map(fav => (
         <Card
           key={fav.siteId}
