@@ -1,6 +1,6 @@
 import React,  { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../AppProvider';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
 
 const Site = () => {
@@ -39,6 +39,8 @@ const Site = () => {
       <p>desc: {siteData.text}</p>
       <p>rate: {siteData.rate}</p>
       <button onClick={handleAddClick}>Add</button>
+      <button><Link to='/favorites'>Fave</Link></button>
+
     </>
   )
 }
