@@ -37,8 +37,8 @@ const SearchResults = () => {
         const results = await getSites(searchValue);
         setCenter(center => ({
           ...center,
-          lat: parseFloat(results.data.lat),
-          lng: parseFloat(results.data.lon)
+          lat: results.data.lat,
+          lng: results.data.lon
         }));
 
         setSites(results.data.sites);

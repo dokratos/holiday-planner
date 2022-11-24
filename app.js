@@ -13,16 +13,6 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.resolve(__dirname, './client/build')));
-
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '/client/build/index.html'));
-	  // app.use(express.static('client/build'));
-  });
-}
-
 app.get('/', async (req, res) => {
   const data = await get();
   res.json(data);
@@ -73,5 +63,14 @@ app.patch('/api/list/favorites', async (req, res) => {
   }
 });
   // res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.resolve(__dirname, './client/build')));
+
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '/client/build/index.html'));
+    // app.use(express.static('client/build'));
+  });
+}
 
 export default app;
