@@ -9,16 +9,16 @@ export default function SearchField() {
   const { setSearchValue } = useContext(AppContext);
   const [value, setValue] = useState('');
 
-  const handleSubmit = e => {
+  const handleSubmit = (e) => {
     e.preventDefault();
     setSearchValue(value);
     setValue('');
-  }
-  
-  const handleChange = e => {
+  };
+
+  const handleChange = (e) => {
     const { value } = e.target;
     setValue(value);
-  }
+  };
 
   return (
     <Paper

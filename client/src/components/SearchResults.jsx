@@ -1,23 +1,18 @@
 import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
 import Box from '@mui/material/Box';
-import {
-  useJsApiLoader,
-  GoogleMap,
-  Marker,
-  InfoWindow,
-} from '@react-google-maps/api';
+import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import SearchField from './SearchField';
 import { AppContext } from '../AppProvider';
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
-  })
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
+  });
 
   const { searchValue } = useContext(AppContext);
-  
+
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
   const [center, setCenter] = useState({
@@ -25,17 +20,17 @@ const SearchResults = () => {
     lng: 0
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
-  
-  const getSites = async search => {
-    const response = await axios.get(`/api/${search}`)
+
+  const getSites = async (search) => {
+    const response = await axios.get(`/api/${search}`);
     return response;
-  }
-  
+  };
+
   useEffect(() => {
-    const getData = async() => {
+    const getData = async () => {
       if (searchValue) {
         const results = await getSites(searchValue);
-        setCenter(center => ({
+        setCenter((center) => ({
           ...center,
           lat: results.data.lat,
           lng: results.data.lon
@@ -43,14 +38,14 @@ const SearchResults = () => {
 
         setSites(results.data.sites);
       }
-    }
+    };
     getData();
   }, [searchValue]);
-  
+
   const handleOnLoad = (map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
     map.fitBounds(bounds);
-    setMap(map)
+    setMap(map);
   };
 
   const handleMarkerClick = async (id) => {
@@ -68,33 +63,35 @@ const SearchResults = () => {
           backgroundColor: 'primary.dark',
           '&:hover': {
             backgroundColor: 'primary.main',
-            opacity: [0.9, 0.8, 0.7],
-          },
+            opacity: [0.9, 0.8, 0.7]
+          }
         }}
-        >
-      {isLoaded &&  <GoogleMap
-          onLoad={handleOnLoad}
-          center={center}
-          zoom={5}
-          mapContainerStyle={{ width: '100%', height: '100%' }}
-          options={{
-            zoomControl: false,
-            streetViewControl: false,
-            mapTypeControl: false,
-            fullscreenControl: false,
-          }}
+      >
+        {isLoaded && (
+          <GoogleMap
+            onLoad={handleOnLoad}
+            center={center}
+            zoom={5}
+            mapContainerStyle={{ width: '100%', height: '100%' }}
+            options={{
+              zoomControl: false,
+              streetViewControl: false,
+              mapTypeControl: false,
+              fullscreenControl: false
+            }}
           >
-          {sites?.map(site => {
-            const obj = {
-              lng: site.geometry.coordinates[0],
-              lat: site.geometry.coordinates[1]
-            }
-            return (
-              <Marker
-                key={site.properties.xid}
-                position={obj}
-                id={site.properties.xid}
-                onClick={() => handleMarkerClick(site.properties.xid)}>
+            {sites?.map((site) => {
+              const obj = {
+                lng: site.geometry.coordinates[0],
+                lat: site.geometry.coordinates[1]
+              };
+              return (
+                <Marker
+                  key={site.properties.xid}
+                  position={obj}
+                  id={site.properties.xid}
+                  onClick={() => handleMarkerClick(site.properties.xid)}
+                >
                   {isMarkerActive === site.properties.xid ? (
                     <InfoWindow>
                       <>
@@ -104,14 +101,15 @@ const SearchResults = () => {
                         </button>
                       </>
                     </InfoWindow>
-                  ) : null }
-              </Marker>
-            )
-          })}
-        </GoogleMap>}
-    </Box>
+                  ) : null}
+                </Marker>
+              );
+            })}
+          </GoogleMap>
+        )}
+      </Box>
     </>
-  )
-}
+  );
+};
 
 export default SearchResults;

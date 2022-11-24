@@ -13,14 +13,16 @@ function NotFoundPage() {
         minHeight: '100vh'
       }}
     >
-      <Container maxWidth='md'>
-        <Typography variant='h1'>
-          404
-        </Typography>
-        <Typography variant='h6'>
-          The page you’re looking for doesn’t exist.
-        </Typography>
-        <Button variant='contained'style={{backgroundColor: 'rgb(91 150 147)'}}  onClick={()=>navigate('/') }>Back Home</Button>
+      <Container maxWidth="md">
+        <Typography variant="h1">404</Typography>
+        <Typography variant="h6">The page you’re looking for doesn’t exist.</Typography>
+        <Button
+          variant="contained"
+          style={{ backgroundColor: 'rgb(91 150 147)' }}
+          onClick={() => navigate('/')}
+        >
+          Back Home
+        </Button>
       </Container>
     </Box>
   );

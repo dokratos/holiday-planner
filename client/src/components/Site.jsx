@@ -7,6 +7,9 @@ const Site = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
 
+  const user = localStorage.getItem('user');
+  const localUser = JSON.parse(user);
+
   let { site } = useParams();
 
   useEffect(() => {
@@ -26,7 +29,11 @@ const Site = () => {
   const handleAddClick = async e => {
     e.preventDefault();
     try {
-      return await axios.patch('/api/favorites', siteData);
+      const data = {
+        siteData,
+        email: localUser.email
+      };
+      return await axios.patch('/api/favorites', data);
     } catch (err) {
       console.error(err);
     }

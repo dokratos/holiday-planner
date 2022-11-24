@@ -1,9 +1,11 @@
 import express from 'express';
 import cors from 'cors';
 import * as path from 'path';
-import { get, updateFavorites, getFavorites, deleteOneFavorite } from './models.js';
+import { get, updateFavorites, getFavorites, deleteOneFavorite, createUser, findUser } from './models.js';
 import { fileURLToPath } from 'url';
 import { getRadius, getWiki } from './opentrip.js';
+import { OAuth2Client } from 'google-auth-library';
+import jwt from 'jsonwebtoken';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -13,6 +15,22 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.static(path.resolve(__dirname, './client/build')));
+
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
+
+const client = new OAuth2Client(GOOGLE_CLIENT_ID);
+
+async function verifyGoogleToken(token) {
+  try {
+    const ticket = await client.verifyIdToken({
+      idToken: token,
+      audience: GOOGLE_CLIENT_ID,
+    });
+    return { payload: ticket.getPayload() };
+  } catch (error) {
+    return { error: "Invalid user detected. Please try again" };
+  }
+};
 
 app.get('/', async (req, res) => {
   const data = await get();
@@ -35,11 +53,9 @@ app.get('/api/sites/:id', async (req, res) => {
   }
 });
 
-const userID = '637e20cc974a8ad518c65a98';
-
 app.patch('/api/favorites', async (req, res) => {
   try {
-    const data = await updateFavorites(userID, req.body);
+    const data = await updateFavorites(req.body.email, req.body.siteData);
     res.json(data);
   } catch(e) {
     console.error(e)
@@ -48,7 +64,7 @@ app.patch('/api/favorites', async (req, res) => {
 
 app.get('/api/list/favorites', async (req, res) => {
   try {
-    const data = await getFavorites(userID);
+    const data = await getFavorites(req.query.email);
     res.json(data);
   } catch(e) {
     console.error(e);
@@ -57,12 +73,88 @@ app.get('/api/list/favorites', async (req, res) => {
 
 app.patch('/api/list/favorites', async (req, res) => {
   try {
-    const data = await deleteOneFavorite(userID, req.body.id);
+    const data = await deleteOneFavorite(req.body.email, req.body.id);
     res.json(data);
   } catch(e) {
     console.error(e)
   }
 });
+
+app.post('/api/signup', async (req, res) => {
+  try {
+    // console.log({ verified: verifyGoogleToken(req.body.credential) });
+    if (req.body.credential) {
+      const verificationResponse = await verifyGoogleToken(req.body.credential);
+
+      if (verificationResponse.error) {
+        return res.status(400).json({
+          message: verificationResponse.error,
+        });
+      }
+
+      const profile = verificationResponse?.payload;
+
+      await createUser(profile);
+
+      res.status(201).json({
+        message: 'Signup was successful',
+        user: {
+          firstName: profile?.given_name,
+          lastName: profile?.family_name,
+          email: profile?.email,
+          token: jwt.sign({ email: profile?.email }, 'mySecret', {
+            expiresIn: "1d",
+          }),
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: 'An error occurred. Registration failed.',
+    });
+  }
+});
+
+app.post("/api/login", async (req, res) => {
+  try {
+    if (req.body.credential) {
+      const verificationResponse = await verifyGoogleToken(req.body.credential);
+      if (verificationResponse.error) {
+        return res.status(400).json({
+          message: verificationResponse.error,
+        });
+      }
+
+      const profile = verificationResponse?.payload;
+
+      const existsInDB = findUser(profile);
+
+      if (!existsInDB) {
+        return res.status(400).json({
+          message: 'You are not registered. Please sign up',
+        });
+      }
+
+      res.status(201).json({
+        message: 'Login was successful',
+        user: {
+          firstName: profile?.given_name,
+          lastName: profile?.family_name,
+          picture: profile?.picture,
+          email: profile?.email,
+          token: jwt.sign({ email: profile?.email }, 'mySecret', {
+            expiresIn: "1d",
+          }),
+        },
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      message: error?.message || error,
+    });
+  }
+});
+
   // res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 
 if (process.env.NODE_ENV === 'production') {
