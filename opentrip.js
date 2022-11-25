@@ -22,12 +22,11 @@ const getRadius = async query => {
 
   try {
     if (lon && lat) {
-      const url = `https://api.opentripmap.com/0.1/en/places/radius?radius=1000&lon=${lon}&lat=${lat}&kinds=cultural%2Cnatural%2Chistoric&apikey=${apiKey}`;
+      const url = `https://api.opentripmap.com/0.1/en/places/radius?radius=6000&lon=${lon}&lat=${lat}&kinds=cultural%2Cnatural%2Chistoric&rate=3h&limit=2000&apikey=${apiKey}`;
       const results = await axios(url);
       const filteredSites = results.data.features.filter(site => {
         if (site.properties.name) return site;
       });
-
       return {
         lon: lon,
         lat: lat,

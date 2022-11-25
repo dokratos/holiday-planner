@@ -23,30 +23,39 @@ export default function SearchField() {
 
   return (
     <Box
-        sx={{
-          width: 'auto',
-          backgroundImage: `url(${Image})`,
-          backgroundSize: 'cover',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center'
-        }}
-      >
-    <Paper
-      component="form"
-      sx={{ p: '2px 4px', display: 'flex', flexDirection: 'row',alignItems: 'center', justifyContent: 'center',  width: 400, marginTop: "30px", marginBottom: "30px" }}
-      onSubmit={handleSubmit}
+      sx={{
+        width: 'auto',
+        backgroundImage: `url(${Image})`,
+        backgroundSize: 'cover',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center'
+      }}
     >
-      <InputBase
-        sx={{ ml: 1, flex: 1 }}
-        placeholder="Search city"
-        inputProps={{ 'aria-label': 'search city' }}
-        onChange={handleChange}
-      />
-      <IconButton type="button" sx={{ p: '10px' }} aria-label="search">
-        <SearchIcon />
-      </IconButton>
-    </Paper>
-     </Box>
+      <Paper
+        component="form"
+        sx={{
+          p: '2px 4px',
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: 400,
+          marginTop: '30px',
+          marginBottom: '30px'
+        }}
+        onSubmit={handleSubmit}
+      >
+        <InputBase
+          sx={{ ml: 1, flex: 1 }}
+          placeholder="Search city"
+          inputProps={{ 'aria-label': 'search city' }}
+          onChange={handleChange}
+        />
+        <IconButton type="submit" sx={{ p: '10px' }} aria-label="search">
+          <SearchIcon />
+        </IconButton>
+      </Paper>
+    </Box>
   );
 }

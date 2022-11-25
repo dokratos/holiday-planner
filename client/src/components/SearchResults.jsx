@@ -58,7 +58,7 @@ const SearchResults = () => {
       <SearchField />
       <Box
         sx={{
-          width: "auto",
+          width: 'auto',
           height: 800,
           backgroundColor: 'primary.dark',
           '&:hover': {
@@ -71,13 +71,15 @@ const SearchResults = () => {
           <GoogleMap
             onLoad={handleOnLoad}
             center={center}
-            zoom={13}
-            mapContainerStyle={{ width: '100%', height: '100%' }}
+            zoom={16}
+            mapContainerStyle={{ width: '100%', height: '100vh' }}
             options={{
               zoomControl: false,
               streetViewControl: false,
               mapTypeControl: false,
-              fullscreenControl: false
+              fullscreenControl: false,
+              minZoom: 12,
+              maxZoom: 18
             }}
           >
             {sites?.map((site) => {
