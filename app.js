@@ -82,7 +82,6 @@ app.patch('/api/list/favorites', async (req, res) => {
 
 app.post('/api/signup', async (req, res) => {
   try {
-    // console.log({ verified: verifyGoogleToken(req.body.credential) });
     if (req.body.credential) {
       const verificationResponse = await verifyGoogleToken(req.body.credential);
 

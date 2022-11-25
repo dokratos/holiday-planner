@@ -20,6 +20,7 @@ const updateFavorites = async (userEmail, siteData) => {
 };
 
 const getFavorites = async userEmail => {
+  console.log(userEmail, 'mongo')
   try {
     const db = await dbConnect();
     const collection = db.collection('users');
@@ -27,7 +28,7 @@ const getFavorites = async userEmail => {
     return result.favorites;
   }
   catch {
-    throw new Error('Id was not found')
+    throw new Error('User was not found')
   }
 };
 

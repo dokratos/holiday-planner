@@ -16,8 +16,8 @@ const SearchResults = () => {
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
   const [center, setCenter] = useState({
-    lat: 0,
-    lng: 0
+    lat: 52.3676,
+    lng: 4.9041
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
 
@@ -58,7 +58,7 @@ const SearchResults = () => {
       <SearchField />
       <Box
         sx={{
-          width: 800,
+          width: 'auto',
           height: 800,
           backgroundColor: 'primary.dark',
           '&:hover': {
@@ -71,13 +71,15 @@ const SearchResults = () => {
           <GoogleMap
             onLoad={handleOnLoad}
             center={center}
-            zoom={5}
-            mapContainerStyle={{ width: '100%', height: '100%' }}
+            zoom={16}
+            mapContainerStyle={{ width: '100%', height: '100vh' }}
             options={{
               zoomControl: false,
               streetViewControl: false,
               mapTypeControl: false,
-              fullscreenControl: false
+              fullscreenControl: false,
+              minZoom: 12,
+              maxZoom: 18
             }}
           >
             {sites?.map((site) => {
