@@ -1,4 +1,4 @@
-import React,  { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { AppContext } from '../AppProvider';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
@@ -17,16 +17,16 @@ const Site = () => {
       const response = await axios.get(`/api/sites/${site}`);
       setSiteData(response.data);
       setIsLoading(false);
-    }
+    };
 
     getData(site);
   }, []);
 
   if (isLoading) {
-    return <>Loading...</>
+    return <>Loading...</>;
   }
 
-  const handleAddClick = async e => {
+  const handleAddClick = async (e) => {
     e.preventDefault();
     try {
       const data = {
@@ -37,19 +37,20 @@ const Site = () => {
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <>
-      <h2>title: {siteData.name}</h2> 
+      <h2>title: {siteData.name}</h2>
       <img alt={siteData.name} src={siteData.image} />
       <p>desc: {siteData.text}</p>
       <p>rate: {siteData.rate}</p>
       <button onClick={handleAddClick}>Add</button>
-      <button><Link to='/favorites'>Fave</Link></button>
-
+      <button>
+        <Link to="/favorites">Fave</Link>
+      </button>
     </>
-  )
-}
+  );
+};
 
 export default Site;

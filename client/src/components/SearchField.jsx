@@ -3,6 +3,7 @@ import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
+import Box from '@mui/material/Box';
 import { AppContext } from '../AppProvider';
 
 export default function SearchField() {
@@ -21,9 +22,19 @@ export default function SearchField() {
   };
 
   return (
+    <Box
+        sx={{
+          width: 'auto',
+          backgroundImage: `url(${Image})`,
+          backgroundSize: 'cover',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center'
+        }}
+      >
     <Paper
       component="form"
-      sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', width: 400 }}
+      sx={{ p: '2px 4px', display: 'flex', flexDirection: 'row',alignItems: 'center', justifyContent: 'center',  width: 400, marginTop: "30px", marginBottom: "30px" }}
       onSubmit={handleSubmit}
     >
       <InputBase
@@ -36,5 +47,6 @@ export default function SearchField() {
         <SearchIcon />
       </IconButton>
     </Paper>
+     </Box>
   );
 }

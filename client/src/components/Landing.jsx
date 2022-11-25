@@ -1,38 +1,49 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import Box from '@mui/material/Box';
+import Image from '../images/bg_main.jpg';
+import Typography from '@mui/material/Typography';
+import Button from '@mui/material/Button';
 const Landing = () => {
   return (
     <>
-      <header style={{ textAlign: 'center' }}>
-        <h1>Welcome to my world</h1>
-      </header>
-      <main style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
-        <Link
-          to="/signup"
-          style={{
-            textDecoration: 'none',
-            border: '1px solid gray',
-            padding: '0.5rem 1rem',
-            backgroundColor: 'wheat',
-            color: '#333'
-          }}
-        >
-          Sign Up
-        </Link>
-        <Link
-          to="/login"
-          style={{
-            textDecoration: 'none',
-            border: '1px solid gray',
-            padding: '0.5rem 1rem',
-            backgroundColor: 'whitesmoke',
-            color: '#333'
-          }}
-        >
-          Login
-        </Link>
-      </main>
+      <Box
+        sx={{
+          height: '100%',
+          width: 'auto',
+          backgroundImage: `url(${Image})`,
+          backgroundSize: 'cover',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center'
+        }}
+      >
+        <Typography variant="h1" gutterBottom sx={{ color: '#fefff9' }}>
+          Welcome to our app
+        </Typography>
+        <main style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
+          <Link
+            to="/signup"
+            style={{
+              textDecoration: 'none'
+            }}
+          >
+            <Button variant="contained" size="large" sx={{ backgroundColor: '#2b3a07' }}>
+              Sign Up
+            </Button>
+          </Link>
+          <Link
+            to="/login"
+            style={{
+              textDecoration: 'none'
+            }}
+          >
+            <Button variant="contained" size="large" sx={{ backgroundColor: '#2b3a07' }}>
+              Login
+            </Button>
+          </Link>
+        </main>
+      </Box>
     </>
   );
 };
