@@ -1,10 +1,16 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from 'react';
+import { Link, Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Image from '../images/bg_main.jpg';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+import SearchField from './SearchField';
+import ImageList from './ImageList';
+import { AppContext } from '../AppProvider';
+
 const Landing = () => {
+  const { searchValue } = useContext(AppContext);
+
   return (
     <>
       <Box
@@ -44,6 +50,12 @@ const Landing = () => {
           </Link>
         </main>
       </Box>
+      <SearchField 
+      />
+      { searchValue && (
+        <Navigate to='/search' />
+      )}
+      <ImageList />
     </>
   );
 };

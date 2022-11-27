@@ -1,5 +1,6 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -43,7 +44,6 @@ function stringAvatar(name) {
 }
 
 const pages = ['Home', 'Search', 'Favorites'];
-const settings = ['Logout'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -52,7 +52,9 @@ function ResponsiveAppBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
+    console.log(event, 'open USER menu')
     setAnchorElUser(event.currentTarget);
   };
 
@@ -192,13 +194,22 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={logout}>
-                    {setting}
+              { localUser ? (
+                <MenuItem onClick={handleCloseUserMenu}>
+                <Typography textAlign="center" onClick={logout}>
+                  Logout
+                </Typography>
+              </MenuItem>
+              ) : (
+                <Link to="/login">
+
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    Login
                   </Typography>
                 </MenuItem>
-              ))}
+                </Link>
+              )}
             </Menu>
           </Box>
         </Toolbar>

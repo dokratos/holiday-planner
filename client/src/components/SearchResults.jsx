@@ -12,6 +12,7 @@ const SearchResults = () => {
   });
 
   const { searchValue } = useContext(AppContext);
+  console.log(searchValue, 'the search value in searchresults')
 
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
@@ -59,7 +60,7 @@ const SearchResults = () => {
       <Box
         sx={{
           width: 'auto',
-          height: 800,
+          height: '100%',
           backgroundColor: 'primary.dark',
           '&:hover': {
             backgroundColor: 'primary.main',
