@@ -6,12 +6,12 @@ const Profile = () => {
 
   return (
     <>
-    {localUser && (
-      <>
-        <p>First name: {localUser.firstName}</p>
-        <p>Last name: {localUser.lastName}</p>
-        <p>Email: {localUser.email}</p>
-      </>
+      {localUser && (
+        <>
+          <p>First name: {localUser.firstName}</p>
+          <p>Last name: {localUser.lastName}</p>
+          <p>Email: {localUser.email}</p>
+        </>
       )}
     </>
   );

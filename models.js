@@ -1,5 +1,5 @@
-import { ObjectId } from 'mongodb';
 import dbConnect from './database.js';
+import { getCityImage } from './opentrip.js';
 
 const get = async () => {
   const db = await dbConnect();
@@ -35,13 +35,44 @@ const deleteOneFavorite = async (userEmail, siteId) => {
   try {
     const db = await dbConnect();
     const collection = db.collection('users');
-    await collection.updateOne({ email: userEmail }, { $pull: { favorites: { siteId: siteId  }} });
+    await collection.updateOne({ email: userEmail }, { $pull: { favorites: { siteId: siteId }} });
     const result = await collection.findOne({ email: userEmail }, {});
     return result.favorites;
   } catch(e) {
     console.error(e)
   }
 };
+
+const updateList = async (userEmail, siteData, searchValue) => {
+  try {
+    const db = await dbConnect();
+    const collection = db.collection('users');
+    const user =  await collection.findOne({ "email": userEmail, "lists.listName": searchValue });
+    if(!user) {
+      const image = await getCityImage(searchValue);
+      await collection.updateOne({ email: userEmail }, { $addToSet: { lists: { listName: searchValue, image }} });
+    }
+    await collection.updateOne(
+      { "email": userEmail, "lists.listName": searchValue }, 
+      { "$addToSet": { "lists.$.sites": siteData} } )
+
+    const result = await collection.findOne({ email: userEmail }, {});
+    return result.favorites;
+  } catch(e) {
+    console.error(e)
+  }
+}
+
+const getLists = async (userEmail) => {
+  try {
+    const db = await dbConnect();
+    const collection = db.collection('users');
+    const user =  await collection.findOne({ 'email': userEmail }, {});
+    return user.lists;
+  } catch(e) {
+    console.error(e)
+  }
+}
 
 const createUser = async (user) => {
   try {
@@ -77,5 +108,7 @@ export {
   getFavorites,
   deleteOneFavorite,
   createUser,
-  findUser
+  findUser,
+  updateList,
+  getLists
 };

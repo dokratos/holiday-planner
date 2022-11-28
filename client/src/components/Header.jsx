@@ -44,7 +44,7 @@ function stringAvatar(name) {
   };
 }
 
-const pages = ['Home', 'Search', 'Favorites'];
+const pages = ['Home', 'Search', 'Favorites', 'Lists'];
 const authSettings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
@@ -202,7 +202,12 @@ function ResponsiveAppBar() {
                 authSettings.map((authSetting) => (
                   <MenuItem key={authSetting} onClick={handleCloseUserMenu}>
                     {authSetting === 'Logout' ? (
-                      <Typography textAlign="center" component="a" href={`/`} onClick={handleLogout}>
+                      <Typography
+                        textAlign="center"
+                        component="a"
+                        href={`/`}
+                        onClick={handleLogout}
+                      >
                         {authSetting}
                       </Typography>
                     ) : (

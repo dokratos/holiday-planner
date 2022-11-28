@@ -1,7 +1,16 @@
 import express from 'express';
 import cors from 'cors';
 import * as path from 'path';
-import { get, updateFavorites, getFavorites, deleteOneFavorite, createUser, findUser } from './models.js';
+import {
+  get,
+  updateFavorites,
+  getFavorites,
+  deleteOneFavorite,
+  createUser,
+  findUser,
+  updateList,
+  getLists,
+} from './models.js';
 import { fileURLToPath } from 'url';
 import { getRadius, getWiki } from './opentrip.js';
 import { OAuth2Client } from 'google-auth-library';
@@ -32,12 +41,12 @@ async function verifyGoogleToken(token) {
   }
 };
 
-app.get('/', async (req, res) => {
-  const data = await get();
-  res.json(data);
-});
+// app.get('/', async (req, res) => {
+//   const data = await get();
+//   res.json(data);
+// });
 
-app.get('/api/:query', async (req, res) => {
+app.get('/api/search/:query', async (req, res) => {
   const city = req.params.query;
   const data = await getRadius(city);
   res.json(data);
@@ -74,6 +83,24 @@ app.get('/api/list/favorites', async (req, res) => {
 app.patch('/api/list/favorites', async (req, res) => {
   try {
     const data = await deleteOneFavorite(req.body.email, req.body.id);
+    res.json(data);
+  } catch(e) {
+    console.error(e)
+  }
+});
+
+app.patch('/api/lists/:listName', async (req, res) => {
+  try {
+    const data = await updateList(req.body.email, req.body.siteData, req.body.searchValue);
+    res.json(data);
+  } catch(e) {
+    console.error(e)
+  }
+});
+
+app.get('/api/lists', async (req, res) => {
+  try {
+    const data = await getLists(req.query.email);
     res.json(data);
   } catch(e) {
     console.error(e)

@@ -1,14 +1,15 @@
 import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
-import Box from '@mui/material/Box';
 import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
+import { AppContext } from '../AppProvider';
+import Box from '@mui/material/Box';
 import SearchField from './SearchField';
 import CardActions from '@mui/material/CardActions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
-import { AppContext } from '../AppProvider';
+import Image from '../images/image_placeholder.png';
 
 const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
@@ -16,7 +17,7 @@ const SearchResults = () => {
   });
 
   const { searchValue } = useContext(AppContext);
-  console.log(searchValue, 'the search value in searchresults');
+  const { siteData, setSiteData } = useContext(AppContext);
 
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
@@ -26,15 +27,20 @@ const SearchResults = () => {
     lng: 4.9041
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
+  const user = localStorage.getItem('user');
+  const localUser = JSON.parse(user);
 
   const getSiteImage = async (id) => {
     const response = await axios.get(`/api/sites/${id}`);
+    setSiteData(response.data);
     setMarkerImage(response.data.image);
+    setIsLoading(false);
   };
 
   const getSites = async (search) => {
-    const response = await axios.get(`/api/${search}`);
+    const response = await axios.get(`/api/search/${search}`);
     return response;
   };
 
@@ -51,8 +57,17 @@ const SearchResults = () => {
         setSites(results.data.sites);
       }
     };
+
     getData();
   }, [searchValue]);
+
+  useEffect(() => {
+    if (isMarkerActive) {
+      setIsLoading(true);
+      getSiteImage(isMarkerActive);
+      setIsLoading(false);
+    }
+  }, [isMarkerActive]);
 
   const handleOnLoad = (map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -63,11 +78,25 @@ const SearchResults = () => {
   const handleMarkerClick = async (id) => {
     if (id === isMarkerActive) return;
     setIsMarkerActive(id);
-    getSiteImage(id);
   };
 
+  const handleAddToList = async () => {
+    try {
+      const data = {
+        siteData,
+        searchValue: searchValue.toLowerCase(),
+        email: localUser.email
+      };
+      return await axios.patch(`/api/lists/${searchValue}`, data);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
-  
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+
   return (
     <>
       <SearchField />
@@ -75,11 +104,7 @@ const SearchResults = () => {
         sx={{
           width: 'auto',
           height: '100%',
-          backgroundColor: 'primary.dark',
-          '&:hover': {
-            backgroundColor: 'primary.main',
-            opacity: [0.9, 0.8, 0.7]
-          }
+          backgroundColor: 'primary.dark'
         }}
       >
         {isLoaded && (
@@ -113,15 +138,33 @@ const SearchResults = () => {
                     <InfoWindow>
                       <>
                         <h2>{site.properties.name}</h2>
-                        <img src={markerImage} alt="" />
-                        <CardActions disableSpacing  sx={{display: "flex", width: "100%", position:"relative"}}>
-                          <IconButton aria-label="add to favorites" sx={{color: "red"}}>
+                        {markerImage ? (
+                          <img src={markerImage} alt={site.properties.name} />
+                        ) : (
+                          <img src={Image} alt="no image available" />
+                        )}
+                        <CardActions
+                          disableSpacing
+                          sx={{ display: 'flex', width: '100%', position: 'relative' }}
+                        >
+                          <IconButton aria-label="add to favorites" sx={{ color: 'red' }}>
                             <FavoriteIcon />
                           </IconButton>
-                          <IconButton aria-label="share" sx={{color: "green"}}>
+                          <IconButton
+                            aria-label="share"
+                            sx={{ color: 'green' }}
+                            onClick={handleAddToList}
+                          >
                             <AddIcon />
                           </IconButton>
-                          <Button size="small" component='a' href={`/search/${site.properties.xid}`} sx={{ position:"absolute", right: 10, bottom: 0}}>Learn More</Button>
+                          <Button
+                            size="small"
+                            component="a"
+                            href={`/search/${site.properties.xid}`}
+                            sx={{ position: 'absolute', right: 10, bottom: 0 }}
+                          >
+                            Learn More
+                          </Button>
                         </CardActions>
                       </>
                     </InfoWindow>

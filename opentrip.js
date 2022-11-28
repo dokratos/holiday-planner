@@ -57,4 +57,10 @@ const getWiki = async wikiData => {
   }
 };
 
-export { getRadius, getWiki };
+const getCityImage = async listName => {
+  const url = `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=${listName}+city&image_type=photo`;
+  const results = await axios(url);
+  return results.data.hits[0].webformatURL;
+}
+
+export { getRadius, getWiki, getCityImage };
