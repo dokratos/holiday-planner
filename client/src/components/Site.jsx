@@ -17,8 +17,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Site = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
-
   const [open, setOpen] = useState(false);
+
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
 
@@ -71,7 +71,7 @@ const Site = () => {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Please sign in to add to favorites
@@ -84,6 +84,9 @@ const Site = () => {
           </Button>
         </DialogActions>
       </Dialog>
+      <button>
+        <Link to="/search">Back</Link>
+      </button>
     </>
   );
 };
