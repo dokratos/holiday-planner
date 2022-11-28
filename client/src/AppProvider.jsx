@@ -18,7 +18,7 @@ const AppProvider = ({ children }) => {
         user,
         setUser,
         lists,
-        setLists,
+        setLists
       }}
     >
       {children}
