@@ -72,15 +72,15 @@ const SearchResults = () => {
           <GoogleMap
             onLoad={handleOnLoad}
             center={center}
-            zoom={16}
-            mapContainerStyle={{ width: '100%', height: '100vh' }}
+            zoom={15}
+            mapContainerStyle={{ width: '100%', height: '150vh' }}
             options={{
-              zoomControl: false,
-              streetViewControl: false,
-              mapTypeControl: false,
-              fullscreenControl: false,
-              minZoom: 12,
-              maxZoom: 18
+              zoomControl: true,
+              streetViewControl: true,
+              mapTypeControl: true,
+              fullscreenControl: true,
+              minZoom: 11,
+              maxZoom: 15
             }}
           >
             {sites?.map((site) => {

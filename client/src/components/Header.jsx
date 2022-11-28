@@ -44,6 +44,7 @@ function stringAvatar(name) {
 }
 
 const pages = ['Home', 'Search', 'Favorites'];
+const settings = ['Logout', 'Profile'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -94,7 +95,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none'
             }}
           >
-            PLAN.it
+            PLANit
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -152,7 +153,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none'
             }}
           >
-            PLAN.it
+            PLANit
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -195,14 +196,17 @@ function ResponsiveAppBar() {
               onClose={handleCloseUserMenu}
             >
               { localUser ? (
-                <MenuItem onClick={handleCloseUserMenu}>
-                <Typography textAlign="center" onClick={logout}>
-                  Logout
-                </Typography>
+               {settings.map((setting) => (
+                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                  {setting === 'Logout' ? (<Typography textAlign="center" onClick={logout}>
+                    {setting}
+                  </Typography>) : 
+                  (<Typography textAlign="center" component="a" href={`/${setting}`}>
+                    {setting}
+                  </Typography>)}
               </MenuItem>
               ) : (
                 <Link to="/login">
-
                 <MenuItem onClick={handleCloseUserMenu}>
                   <Typography textAlign="center">
                     Login
@@ -217,4 +221,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;

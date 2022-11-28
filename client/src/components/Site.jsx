@@ -17,8 +17,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Site = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
-
   const [open, setOpen] = useState(false);
+
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
 
@@ -61,10 +61,9 @@ const Site = () => {
 
   return (
     <>
-      <h2>title: {siteData.name}</h2>
+      <h2>{siteData.name}</h2>
       <img alt={siteData.name} src={siteData.image} />
-      <p>desc: {siteData.text}</p>
-      <p>rate: {siteData.rate}</p>
+      <p>{siteData.text}</p>
       <button onClick={user ? handleAddClick : handleClickOpen}>Add</button>
       <Dialog
         open={open}
@@ -72,7 +71,7 @@ const Site = () => {
         onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
-        <DialogTitle>{"Use Google's location service?"}</DialogTitle>
+        <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
             Please sign in to add to favorites
@@ -86,7 +85,7 @@ const Site = () => {
         </DialogActions>
       </Dialog>
       <button>
-        <Link to="/favorites">Fave</Link>
+        <Link to="/search">Back</Link>
       </button>
     </>
   );

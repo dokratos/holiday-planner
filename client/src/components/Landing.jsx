@@ -25,7 +25,7 @@ const Landing = () => {
         }}
       >
         <Typography variant="h1" gutterBottom sx={{ color: '#fefff9' }}>
-          Welcome to our app
+          Welcome to PLANit
         </Typography>
         <main style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
           <Link
