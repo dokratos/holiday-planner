@@ -43,7 +43,7 @@ function stringAvatar(name) {
 }
 
 const pages = ['Home', 'Search', 'Favorites'];
-const settings = ['Logout'];
+const settings = ['Logout', 'Profile'];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -92,7 +92,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none'
             }}
           >
-            PLAN.it
+            PLANit
           </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -150,7 +150,7 @@ function ResponsiveAppBar() {
               textDecoration: 'none'
             }}
           >
-            PLAN.it
+            PLANit
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
@@ -194,9 +194,12 @@ function ResponsiveAppBar() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center" onClick={logout}>
+                  {setting === 'Logout' ? (<Typography textAlign="center" onClick={logout}>
                     {setting}
-                  </Typography>
+                  </Typography>) : 
+                  (<Typography textAlign="center" component="a" href={`/${setting}`}>
+                    {setting}
+                  </Typography>)}
                 </MenuItem>
               ))}
             </Menu>

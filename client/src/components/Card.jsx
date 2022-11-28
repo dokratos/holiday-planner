@@ -7,31 +7,33 @@ import Typography from '@mui/material/Typography';
 import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
-export default function MediaControlCard({ name, id, image, rate, handleDelete }) {
+export default function MediaControlCard({ name, id, image, text, handleDelete }) {
   return (
     <Card sx={{ display: 'flex' }}>
+      {image && (
+        <CardMedia
+          component="img"
+          sx={{ width: 151 }}
+          image={image}
+          alt={name}
+        />
+      )}
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography component="div" variant="h5"></Typography>
           <Typography variant="subtitle1" color="text.secondary" component="div">
             {name}
           </Typography>
-          <Typography variant="subtitle1" color="text.secondary" component="div">
-            {rate}
+          <Typography variant="body2" color="text.secondary" component="div">
+          {text.length > 250 ?
+           `${text.substring(0, 200)}...` : text}
           </Typography>
-          <IconButton aria-label="delete" onClick={() => handleDelete(id)}>
+          <IconButton aria-label="delete" alt="delete from Favorites" onClick={() => handleDelete(id)}>
             <DeleteIcon />
           </IconButton>
         </CardContent>
       </Box>
-      {image && (
-        <CardMedia
-          component="img"
-          sx={{ width: 151 }}
-          image={image}
-          alt="Live from space album cover"
-        />
-      )}
+      
     </Card>
   );
 }

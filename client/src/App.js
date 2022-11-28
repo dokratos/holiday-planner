@@ -4,6 +4,7 @@ import { AppContext } from './AppProvider';
 import SearchResults from './components/SearchResults';
 import Site from './components/Site';
 import Favorites from './components/Favorites';
+import Profile from './components/Profile';
 import Login from './components/Login';
 import SignUp from './components/SignUp';
 import Header from './components/Header';
@@ -29,11 +30,12 @@ function App() {
       <Routes>
         <Route path="/home" element={user?.email ? <Home user={user} /> : <Navigate to="/" />} />
         <Route path="/search" element={<SearchResults />}></Route>
-        <Route path="/" element={user?.email ? <Navigate to="/home" /> : <Landing />}></Route>
-        <Route path="/login" element={user?.email ? <Navigate to="/home" /> : <Login />} />
-        <Route path="/signup" element={user?.email ? <Navigate to="/home" /> : <SignUp />} />
+        <Route path="/" element={<Landing />}></Route>
+        <Route path="/login" element={user?.email ? <Navigate to="/" /> : <Login />} />
+        <Route path="/signup" element={user?.email ? <Navigate to="/" /> : <SignUp />} />
         <Route path="/search/:site" element={<Site />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
+        <Route path="/profile" element={<Profile />}></Route>
         <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </div>
