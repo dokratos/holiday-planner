@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useNavigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
@@ -8,8 +9,10 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 
 export default function MediaControlCard({ name, id, image, rate, handleDelete }) {
+  const navigate = useNavigate();
+
   return (
-    <Card sx={{ display: 'flex' }}>
+    <Card sx={{ display: 'flex' }} onClick={() => navigate(`/search/${id}`)}>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <CardContent sx={{ flex: '1 0 auto' }}>
           <Typography component="div" variant="h5"></Typography>
@@ -19,7 +22,7 @@ export default function MediaControlCard({ name, id, image, rate, handleDelete }
           <Typography variant="subtitle1" color="text.secondary" component="div">
             {rate}
           </Typography>
-          <IconButton aria-label="delete" onClick={() => handleDelete(id)}>
+          <IconButton aria-label="delete" onClick={(e) => handleDelete(e, id)}>
             <DeleteIcon />
           </IconButton>
         </CardContent>

@@ -1,10 +1,13 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Box, Button, Container, Typography } from '@mui/material';
 import Card from './Card';
-import Box from '@mui/material/Box';
+import { useNavigate } from 'react-router-dom';
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState();
+  const navigate = useNavigate();
+
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
 
@@ -14,16 +17,19 @@ const Favorites = () => {
         const response = await axios.get('/api/list/favorites', {
           params: { email: localUser.email }
         });
-        console.log(response.data);
+
         setFavorites(response.data);
       } catch (err) {
         console.error(err);
       }
     };
+
     getFavorites();
   }, []);
 
-  const handleDelete = async (id) => {
+  const handleDelete = async (e, id) => {
+    e.stopPropagation();
+
     try {
       const response = await axios.patch('/api/list/favorites', { id: id, email: localUser.email });
       setFavorites(response.data);
@@ -34,6 +40,31 @@ const Favorites = () => {
 
   return (
     <div>
+      {!user && (
+        <>
+          <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            minHeight: '100vh'
+          }}
+          >
+            <Container maxWidth="md">
+              <Typography variant="h2">Oh no! It seems like you are not logged in :(</Typography>
+              <Typography variant="h6" style={{ marginTop: '1rem' }}>Please log in to add favorites</Typography>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: 'rgb(91 150 147)', marginTop: '1rem' }}
+                onClick={() => navigate('/signup')}
+              >
+                Log in
+              </Button>
+            </Container>
+          </Box>
+        </>
+      )}
+
       <h1>Favorites</h1>
       <Box
         sx={{
