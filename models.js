@@ -20,7 +20,6 @@ const updateFavorites = async (userEmail, siteData) => {
 };
 
 const getFavorites = async userEmail => {
-  console.log(userEmail, 'mongo')
   try {
     const db = await dbConnect();
     const collection = db.collection('users');

@@ -61,10 +61,9 @@ const Site = () => {
 
   return (
     <>
-      <h2>title: {siteData.name}</h2>
+      <h2>{siteData.name}</h2>
       <img alt={siteData.name} src={siteData.image} />
-      <p>desc: {siteData.text}</p>
-      <p>rate: {siteData.rate}</p>
+      <p>{siteData.text}</p>
       <button onClick={user ? handleAddClick : handleClickOpen}>Add</button>
       <Dialog
         open={open}
