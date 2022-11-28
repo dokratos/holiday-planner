@@ -78,15 +78,12 @@ const createUser = async (user) => {
   try {
     const db = await dbConnect();
     const collection = db.collection('users');
-    const userExists = await collection.findOne({ email: user.email });
     const dbUser = {
       ...user,
       favorites: [],
       lists: [],
     };
-
-    !userExists && await collection.insertOne(dbUser);
-    return
+    return await collection.insertOne(dbUser);
   } catch(e) {
     console.error(e)
   }
@@ -96,7 +93,10 @@ const findUser = async (user) => {
   try{
     const db = await dbConnect();
     const collection = db.collection('users');
-    return await collection.findOne({ email: user.email });
+    const userExists = await collection.findOne({ email: user.email });
+    if (!userExists) {
+      createUser(user)
+    }
   } catch(e) {
     console.error(e)
   }

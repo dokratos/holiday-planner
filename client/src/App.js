@@ -6,7 +6,6 @@ import Site from './components/Site';
 import Favorites from './components/Favorites';
 import Profile from './components/Profile';
 import Login from './components/Login';
-import SignUp from './components/SignUp';
 import Header from './components/Header';
 import NotFoundPage from './components/NotFoundPage';
 import Landing from './components/Landing';
@@ -33,7 +32,6 @@ function App() {
         <Route path="/search" element={<SearchResults />}></Route>
         <Route path="/" element={<Landing />}></Route>
         <Route path="/login" element={user?.email ? <Navigate to="/" /> : <Login />} />
-        <Route path="/signup" element={user?.email ? <Navigate to="/" /> : <SignUp />} />
         <Route path="/search/:site" element={<Site />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
         <Route path="/profile" element={<Profile />}></Route>

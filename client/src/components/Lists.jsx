@@ -6,9 +6,12 @@ import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
 import InfoIcon from '@mui/icons-material/Info';
+import { Box, Button, Container, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const Lists = () => {
   const { lists, setLists } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
@@ -30,6 +33,32 @@ const Lists = () => {
   }, []);
   return (
     <>
+      {!user && (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '100vh'
+            }}
+          >
+            <Container maxWidth="md">
+              <Typography variant="h2">Oh no! It seems like you are not logged in :(</Typography>
+              <Typography variant="h6" style={{ marginTop: '1rem' }}>
+                Please log in to add favorites
+              </Typography>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: 'rgb(91 150 147)', marginTop: '1rem' }}
+                onClick={() => navigate('/signup')}
+              >
+                Log in
+              </Button>
+            </Container>
+          </Box>
+        </>
+      )}
     {lists?.map(list => (
       <>
       <img src={list.image} alt="" />
