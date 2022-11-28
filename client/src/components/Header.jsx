@@ -1,5 +1,6 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
+import { Link } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -52,7 +53,9 @@ function ResponsiveAppBar() {
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
+
   const handleOpenUserMenu = (event) => {
+    console.log(event, 'open USER menu')
     setAnchorElUser(event.currentTarget);
   };
 
@@ -192,7 +195,8 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
+              { localUser ? (
+               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
                   {setting === 'Logout' ? (<Typography textAlign="center" onClick={logout}>
                     {setting}
@@ -200,8 +204,16 @@ function ResponsiveAppBar() {
                   (<Typography textAlign="center" component="a" href={`/${setting}`}>
                     {setting}
                   </Typography>)}
+              </MenuItem>
+              ) : (
+                <Link to="/login">
+                <MenuItem onClick={handleCloseUserMenu}>
+                  <Typography textAlign="center">
+                    Login
+                  </Typography>
                 </MenuItem>
-              ))}
+                </Link>
+              )}
             </Menu>
           </Box>
         </Toolbar>
@@ -209,4 +221,5 @@ function ResponsiveAppBar() {
     </AppBar>
   );
 }
+
 export default ResponsiveAppBar;
