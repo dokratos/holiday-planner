@@ -12,7 +12,7 @@ const SearchResults = () => {
   });
 
   const { searchValue } = useContext(AppContext);
-  console.log(searchValue, 'the search value in searchresults')
+  console.log(searchValue, 'the search value in searchresults');
 
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);

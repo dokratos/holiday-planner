@@ -43,16 +43,18 @@ const Favorites = () => {
       {!user && (
         <>
           <Box
-          sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            minHeight: '100vh'
-          }}
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '100vh'
+            }}
           >
             <Container maxWidth="md">
               <Typography variant="h2">Oh no! It seems like you are not logged in :(</Typography>
-              <Typography variant="h6" style={{ marginTop: '1rem' }}>Please log in to add favorites</Typography>
+              <Typography variant="h6" style={{ marginTop: '1rem' }}>
+                Please log in to add favorites
+              </Typography>
               <Button
                 variant="contained"
                 style={{ backgroundColor: 'rgb(91 150 147)', marginTop: '1rem' }}

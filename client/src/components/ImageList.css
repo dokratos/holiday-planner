@@ -1,31 +1,31 @@
 ul {
-    grid-template-columns: repeat(8, 2fr);
+  grid-template-columns: repeat(8, 2fr);
 }
 
 .MuiImageList-root {
-    display: grid;
-    grid-auto-flow: column;
-    position: relative;
-    text-align: center;
+  display: grid;
+  grid-auto-flow: column;
+  position: relative;
+  text-align: center;
 }
 
 .MuiImageListItem-img {
-    border-radius: 50%;
-    max-width: 164px;
-    min-width: 164px;
-    max-height: 164px;
-    min-height: 164px;
-    cursor: pointer;
+  border-radius: 50%;
+  max-width: 164px;
+  min-width: 164px;
+  max-height: 164px;
+  min-height: 164px;
+  cursor: pointer;
 }
 
 .MuiImageListItem-img__title {
-    color: whitesmoke;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    cursor: pointer;
-  }
+  color: whitesmoke;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
 
 /* @media screen and (min-width: 600px) {
     .MuiImageList-root {

@@ -50,11 +50,8 @@ const Landing = () => {
           </Link>
         </main>
       </Box>
-      <SearchField 
-      />
-      { searchValue && (
-        <Navigate to='/search' />
-      )}
+      <SearchField />
+      {searchValue && <Navigate to="/search" />}
       <ImageList />
     </>
   );

@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const Profile = () => {
   const user = localStorage.getItem('user');
@@ -6,11 +6,15 @@ const Profile = () => {
 
   return (
     <>
-      <p>First name: {localUser.firstName}</p>
-      <p>Last name: {localUser.lastName}</p>
-      <p>Email: {localUser.email}</p>
+    {localUser && (
+      <>
+        <p>First name: {localUser.firstName}</p>
+        <p>Last name: {localUser.lastName}</p>
+        <p>Email: {localUser.email}</p>
+      </>
+      )}
     </>
-  )
-}
+  );
+};
 
-export default Profile
+export default Profile;

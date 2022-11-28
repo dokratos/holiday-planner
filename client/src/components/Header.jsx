@@ -1,6 +1,7 @@
-import * as React from 'react';
-import AppBar from '@mui/material/AppBar';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
@@ -44,18 +45,20 @@ function stringAvatar(name) {
 }
 
 const pages = ['Home', 'Search', 'Favorites'];
-const settings = ['Logout', 'Profile'];
+const authSettings = ['Profile', 'Logout'];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const navigate = useNavigate();
+
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
   };
 
   const handleOpenUserMenu = (event) => {
-    console.log(event, 'open USER menu')
+    console.log(event, 'open USER menu');
     setAnchorElUser(event.currentTarget);
   };
 
@@ -70,7 +73,7 @@ function ResponsiveAppBar() {
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
 
-  const logout = () => {
+  const handleLogout = () => {
     localStorage.removeItem('user');
     window.location.reload();
   };
@@ -195,23 +198,25 @@ function ResponsiveAppBar() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              { localUser ? (
-               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  {setting === 'Logout' ? (<Typography textAlign="center" onClick={logout}>
-                    {setting}
-                  </Typography>) : 
-                  (<Typography textAlign="center" component="a" href={`/${setting}`}>
-                    {setting}
-                  </Typography>)}
-              </MenuItem>
+              {localUser ? (
+                authSettings.map((authSetting) => (
+                  <MenuItem key={authSetting} onClick={handleCloseUserMenu}>
+                    {authSetting === 'Logout' ? (
+                      <Typography textAlign="center" component="a" href={`/`} onClick={handleLogout}>
+                        {authSetting}
+                      </Typography>
+                    ) : (
+                      <Typography textAlign="center" component="a" href={`/${authSetting}`}>
+                        {authSetting}
+                      </Typography>
+                    )}
+                  </MenuItem>
+                ))
               ) : (
                 <Link to="/login">
-                <MenuItem onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">
-                    Login
-                  </Typography>
-                </MenuItem>
+                  <MenuItem onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Login</Typography>
+                  </MenuItem>
                 </Link>
               )}
             </Menu>
