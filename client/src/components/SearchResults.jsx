@@ -3,8 +3,12 @@ import axios from 'axios';
 import Box from '@mui/material/Box';
 import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import SearchField from './SearchField';
+import CardActions from '@mui/material/CardActions';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import Button from '@mui/material/Button';
+import IconButton from '@mui/material/IconButton';
+import AddIcon from '@mui/icons-material/Add';
 import { AppContext } from '../AppProvider';
-import { Link } from 'react-router-dom';
 
 const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
@@ -16,11 +20,18 @@ const SearchResults = () => {
 
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
+  const [markerImage, setMarkerImage] = useState('');
   const [center, setCenter] = useState({
     lat: 52.3676,
     lng: 4.9041
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
+
+
+  const getSiteImage = async (id) => {
+    const response = await axios.get(`/api/sites/${id}`);
+    setMarkerImage(response.data.image);
+  };
 
   const getSites = async (search) => {
     const response = await axios.get(`/api/${search}`);
@@ -52,8 +63,11 @@ const SearchResults = () => {
   const handleMarkerClick = async (id) => {
     if (id === isMarkerActive) return;
     setIsMarkerActive(id);
+    getSiteImage(id);
   };
 
+
+  
   return (
     <>
       <SearchField />
@@ -99,9 +113,16 @@ const SearchResults = () => {
                     <InfoWindow>
                       <>
                         <h2>{site.properties.name}</h2>
-                        <button>
-                          <Link to={`/search/${site.properties.xid}`}>Learn more</Link>
-                        </button>
+                        <img src={markerImage} alt="" />
+                        <CardActions disableSpacing  sx={{display: "flex", width: "100%", position:"relative"}}>
+                          <IconButton aria-label="add to favorites" sx={{color: "red"}}>
+                            <FavoriteIcon />
+                          </IconButton>
+                          <IconButton aria-label="share" sx={{color: "green"}}>
+                            <AddIcon />
+                          </IconButton>
+                          <Button size="small" component='a' href={`/search/${site.properties.xid}`} sx={{ position:"absolute", right: 10, bottom: 0}}>Learn More</Button>
+                        </CardActions>
                       </>
                     </InfoWindow>
                   ) : null}
