@@ -1,18 +1,30 @@
 import React, { useContext, useEffect } from 'react';
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
+import { createTheme } from '@mui/system';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
+
+const theme = createTheme({
+  breakpoints: {
+    values: {
+      xs: 0,
+      sm: 700
+    },
+  },
+});
 
 const Lists = () => {
   const { lists, setLists } = useContext(AppContext);
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
+
+  const mediaQueries = useMediaQuery(theme.breakpoints.down('sm'));
 
   useEffect(() => {
     const getLists = async () => {
@@ -29,38 +41,35 @@ const Lists = () => {
 
     getLists();
   }, []);
+
   return (
-    <>
-    {lists?.map(list => (
-      <>
-        <img src={list.image} alt="list.listName" />
-        <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
-      </>
-    ))}
-      {/* <ImageList variant="masonry" cols={3} gap={8}>
-        {lists.map((item) => (
-          <ImageListItem key={item.img}>
+    //<>
+    //{lists?.map(list => (
+      //<>
+        //<img src={list.image} alt="list.listName" />
+       // <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
+      //</>
+  //  ))}
+     // {/* <ImageList variant="masonry" cols={3} gap={8}>
+       // {lists.map((item) => (
+        //  <ImageListItem key={item.img}>
+    <Link to='/list'>
+      <ImageList variant="masonry" cols={mediaQueries ? 1 : 3 } gap={8}>
+        {lists?.map((item) => (
+          <ImageListItem key={item.image}>
             <img
-              src={`${item.listName}?w=248&fit=crop&auto=format`}
+              src={`${item.image}?w=248&fit=crop&auto=format`}
               alt={item.listName}
               loading="lazy"
             />
-              <ImageListItemBar
-                title={item.title}
-                actionIcon={
-                  <IconButton
-                    sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                    aria-label={`info about ${item.title}`}
-                  >
-                    <InfoIcon />
-                  </IconButton>
-                }
-              />
+          <ImageListItemBar
+            sx={{ textTransform: 'capitalize' }}
+            title={item.listName}
+          />
           </ImageListItem>
         ))}
-        hpidshpsh
-      </ImageList> */}
-    </>
+      </ImageList>
+    </Link>
   )
 };
 

@@ -11,6 +11,7 @@ import Header from './components/Header';
 import NotFoundPage from './components/NotFoundPage';
 import Landing from './components/Landing';
 import Home from './components/Home';
+import List from './components/List';
 import Lists from './components/Lists';
 import List from './components/List';
 import './App.css';
@@ -39,6 +40,7 @@ function App() {
         <Route path="/search/:site" element={<Site />}></Route>
         <Route path="/favorites" element={<Favorites />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
+        <Route path="/list" element={<List />}></Route>
         <Route path="/lists" element={<Lists />}></Route>
         <Route path="/lists/:list" element={<List />}></Route>
         <Route path="*" element={<NotFoundPage />}></Route>

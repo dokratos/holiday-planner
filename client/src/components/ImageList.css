@@ -1,4 +1,4 @@
-ul {
+/* ul {
   grid-template-columns: repeat(8, 2fr);
 }
 
@@ -37,4 +37,4 @@ ul {
     .MuiImageList-root {
         grid-auto-columns: 15%;
     }
-} */
+} */ 
