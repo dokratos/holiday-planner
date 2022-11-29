@@ -1,7 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { Link } from "react-router-dom";
-import axios from 'axios';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 import { AppContext } from '../AppProvider';
 import { createTheme } from '@mui/system';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -14,8 +13,8 @@ const theme = createTheme({
     values: {
       xs: 0,
       sm: 700
-    },
-  },
+    }
+  }
 });
 
 const Lists = () => {
@@ -32,7 +31,7 @@ const Lists = () => {
         const response = await axios.get('/api/lists', {
           params: { email: localUser.email }
         });
-        
+
         setLists(response.data);
       } catch (err) {
         console.error(err);
@@ -45,32 +44,29 @@ const Lists = () => {
   return (
     //<>
     //{lists?.map(list => (
-      //<>
-        //<img src={list.image} alt="list.listName" />
-       // <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
-      //</>
-  //  ))}
-     // {/* <ImageList variant="masonry" cols={3} gap={8}>
-       // {lists.map((item) => (
-        //  <ImageListItem key={item.img}>
-    <Link to='/list'>
-      <ImageList variant="masonry" cols={mediaQueries ? 1 : 3 } gap={8}>
-        {lists?.map((item) => (
-          <ImageListItem key={item.image}>
+    //<>
+    //<img src={list.image} alt="list.listName" />
+    // <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
+    //</>
+    //  ))}
+    // {/* <ImageList variant="masonry" cols={3} gap={8}>
+    // {lists.map((item) => (
+    //  <ImageListItem key={item.img}>
+    <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
+      {lists?.map((item) => (
+        <Link to={`/lists/${item.listName}`} key={item.image}>
+          <ImageListItem>
             <img
               src={`${item.image}?w=248&fit=crop&auto=format`}
               alt={item.listName}
               loading="lazy"
             />
-          <ImageListItemBar
-            sx={{ textTransform: 'capitalize' }}
-            title={item.listName}
-          />
+            <ImageListItemBar sx={{ textTransform: 'capitalize' }} title={item.listName} />
           </ImageListItem>
-        ))}
-      </ImageList>
-    </Link>
-  )
+        </Link>
+      ))}
+    </ImageList>
+  );
 };
 
 export default Lists;
