@@ -29,6 +29,8 @@ const SearchResults = () => {
   const [isMarkerActive, setIsMarkerActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [favorites, setFavorites] = useState([]);
+
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
 
@@ -97,6 +99,34 @@ const SearchResults = () => {
     return <>Loading...</>;
   }
 
+  const handleAddToFavorites = async () => {
+    console.log(siteData);
+    const favItem = favorites.find((item) => item === siteData.siteId);
+       if (!favItem) {
+       setFavorites([...favorites, siteData.siteId]);
+       try {
+          const data = {
+            siteData,
+            email: localUser.email
+          };
+          return await axios.patch('/api/favorites', data);
+      } catch (err) {
+        console.error(err);
+      }
+       } else {
+        const newFavorites = favorites.filter((item) => item !== siteData.siteId);
+         setFavorites(newFavorites) ;
+         try {
+          const response = await axios.patch('/api/list/favorites', { id: siteData.siteId, email: localUser.email });
+          console.log( response.data);
+        } catch (err) {
+          console.error(err);
+        }
+       }
+  };
+
+ console.log(favorites);
+
   return (
     <>
       <SearchField />
@@ -147,7 +177,7 @@ const SearchResults = () => {
                           disableSpacing
                           sx={{ display: 'flex', width: '100%', position: 'relative' }}
                         >
-                          <IconButton aria-label="add to favorites" sx={{ color: 'red' }}>
+                           <IconButton aria-label="add to favorites" sx={favorites.indexOf(site.properties.xid) > 0  ?  { color: "red"} : {color: "grey"  }}   onClick={handleAddToFavorites}>
                             <FavoriteIcon />
                           </IconButton>
                           <IconButton
