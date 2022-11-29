@@ -12,7 +12,9 @@ import NotFoundPage from './components/NotFoundPage';
 import Landing from './components/Landing';
 import Home from './components/Home';
 import Lists from './components/Lists';
+import List from './components/List';
 import './App.css';
+
 
 function App() {
   const { user, setUser } = useContext(AppContext);
@@ -38,6 +40,7 @@ function App() {
         <Route path="/favorites" element={<Favorites />}></Route>
         <Route path="/profile" element={<Profile />}></Route>
         <Route path="/lists" element={<Lists />}></Route>
+        <Route path="/lists/:list" element={<List />}></Route>
         <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
     </div>

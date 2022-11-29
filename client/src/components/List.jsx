@@ -7,67 +7,31 @@ import SearchField from './SearchField';
 import CardActions from '@mui/material/CardActions';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
+import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Image from '../images/image_placeholder.png';
 
-const SearchResults = () => {
+const List = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
   });
 
-  const { searchValue } = useContext(AppContext);
-  const { siteData, setSiteData } = useContext(AppContext);
-
   const [map, setMap] = useState(null);
-  const [sites, setSites] = useState([]);
-  const [markerImage, setMarkerImage] = useState('');
+  // const [markerImage, setMarkerImage] = useState('');
   const [center, setCenter] = useState({
-    lat: 52.3676,
-    lng: 4.9041
+    lat: 40.4168,
+    lng: -3.703790
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const user = localStorage.getItem('user');
-  const localUser = JSON.parse(user);
-
-  const getSiteImage = async (id) => {
-    const response = await axios.get(`/api/sites/${id}`);
-    setSiteData(response.data);
-    setMarkerImage(response.data.image);
-    setIsLoading(false);
-  };
-
-  const getSites = async (search) => {
-    const response = await axios.get(`/api/search/${search}`);
-    return response;
-  };
 
   useEffect(() => {
-    const getData = async () => {
-      if (searchValue) {
-        const results = await getSites(searchValue);
-        setCenter((center) => ({
-          ...center,
-          lat: results.data.lat,
-          lng: results.data.lon
-        }));
-
-        setSites(results.data.sites);
-      }
-    };
-
-    getData();
-  }, [searchValue]);
-
-  useEffect(() => {
-    if (isMarkerActive) {
-      setIsLoading(true);
-      getSiteImage(isMarkerActive);
-      setIsLoading(false);
-    }
-  }, [isMarkerActive]);
+    setCenter((center) => ({
+      ...center,
+      lat: mockList.sites[0].point.lat,
+      lng: mockList.sites[0].point.lon
+    }));
+  }, [])
 
   const handleOnLoad = (map) => {
     const bounds = new window.google.maps.LatLngBounds(center);
@@ -80,26 +44,14 @@ const SearchResults = () => {
     setIsMarkerActive(id);
   };
 
-  const handleAddToList = async () => {
-    try {
-      const data = {
-        siteData,
-        searchValue: searchValue.toLowerCase(),
-        email: localUser.email
-      };
-      return await axios.patch(`/api/lists/${searchValue}`, data);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  const handleRemoveFromList = () => {
 
-  if (isLoading) {
-    return <>Loading...</>;
   }
 
   return (
     <>
-      <SearchField />
+      {/* <SearchField /> */}
+      <h1 style={{ textTransform: 'capitalize' }}>{mockList.listName}</h1>
       <Box
         sx={{
           width: 'auto',
@@ -112,7 +64,7 @@ const SearchResults = () => {
             onLoad={handleOnLoad}
             center={center}
             zoom={15}
-            mapContainerStyle={{ width: '100%', height: '150vh' }}
+            mapContainerStyle={{ width: '100%', height: '100vh' }}
             options={{
               zoomControl: true,
               streetViewControl: false,
@@ -122,24 +74,24 @@ const SearchResults = () => {
               maxZoom: 15
             }}
           >
-            {sites?.map((site) => {
+            {mockList.sites?.map((site) => {
               const obj = {
-                lng: site.geometry.coordinates[0],
-                lat: site.geometry.coordinates[1]
+                lng: site.point.lon,
+                lat: site.point.lat
               };
               return (
                 <Marker
-                  key={site.properties.xid}
+                  key={site.siteId}
                   position={obj}
-                  id={site.properties.xid}
-                  onClick={() => handleMarkerClick(site.properties.xid)}
+                  id={site.siteId}
+                  onClick={() => handleMarkerClick(site.siteId)}
                 >
-                  {isMarkerActive === site.properties.xid ? (
+                  {isMarkerActive === site.siteId ? (
                     <InfoWindow>
                       <>
-                        <h2>{site.properties.name}</h2>
-                        {markerImage ? (
-                          <img src={markerImage} alt={site.properties.name} />
+                        <h2>{site.name}</h2>
+                        {site.image ? (
+                          <img src={site.image} alt={site.name} />
                         ) : (
                           <img src={Image} alt="no image available" />
                         )}
@@ -151,16 +103,16 @@ const SearchResults = () => {
                             <FavoriteIcon />
                           </IconButton>
                           <IconButton
-                            aria-label="share"
-                            sx={{ color: 'green' }}
-                            onClick={handleAddToList}
+                            aria-label="delete"
+                            sx={{ color: 'grey' }}
+                            onClick={handleRemoveFromList}
                           >
                             <AddIcon />
                           </IconButton>
                           <Button
                             size="small"
                             component="a"
-                            href={`/search/${site.properties.xid}`}
+                            href={`/search/${site.siteId}`}
                             sx={{ position: 'absolute', right: 10, bottom: 0 }}
                           >
                             Learn More
@@ -176,7 +128,56 @@ const SearchResults = () => {
         )}
       </Box>
     </>
-  );
-};
+  )
+}
 
-export default SearchResults;
+export default List;
+
+const mockList = {
+  listName: "madrid",
+  iamge: "img.jpg",
+  sites: [{
+    siteId: "W4263036",
+    name: "Main Square",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e6/Plaza_Mayor_De_Madrid_%28215862629%29_%28cropped%29.jpeg/400px-Plaza_Mayor_De_Madrid_%28215862629%29_%28cropped%29.jpeg",
+    rate: "3h",
+    text: "The Plaza Mayor (English: Main Square) is a major public space in the …",
+    point: {
+      lon: -3.707374334335327,
+      lat: 40.4153938293457,
+    }
+  },
+  {
+    siteId: "W4518846",
+    name: "Mercado de San Miguel",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/Mercado_de_San_Miguel_%28Madrid%29_04.jpg/400px-Mercado_de_San_Miguel_%28Madrid%29_04.jpg",
+    rate: "3h",
+    text: "The Market of San Miguel (Spanish: Mercado de San Miguel) is a covered market located in Madrid, Spain. Originally built in 1916, it was purchased b...",
+    point: {
+      lon: -3.7090156078338623,
+      lat: 40.415374755859375,
+    }
+  },
+  {
+    siteId: "R7726080",
+    name: "Museo del Prado",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Sala_de_Tiziano_en_el_Museo_del_Prado.jpg/400px-Sala_de_Tiziano_en_el_Museo_del_Prado.jpg",
+    rate: "3h",
+    text: "The Prado Museum ( PRAH-doh; Spanish: Museo del Prado [muˈseo ðel ˈpɾaðo]), offici...",
+    point: {
+      lon: -3.69203782081604,
+      lat: 40.41379165649414,
+    }
+  },
+  {
+    siteId: "N4688465171",
+    name: "Palacio de Cibeles",
+    image: "https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Palacio_de_Comunicaciones_-_46.jpg/400px-Palacio_de_Comunicaciones_-_46.jpg",
+    rate: "3h",
+    text: "Cibeles Palace (Spanish: Palacio de Cibeles), formally known as Palacio de Comunica...",
+    point: {
+      lon: -3.692185640335083,
+      lat: 40.41889953613281,
+    }
+  }]
+}

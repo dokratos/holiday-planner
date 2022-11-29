@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import { AppContext } from '../AppProvider';
 import ImageList from '@mui/material/ImageList';
@@ -32,9 +33,9 @@ const Lists = () => {
     <>
     {lists?.map(list => (
       <>
-      <img src={list.image} alt="" />
-    <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
-    </>
+        <img src={list.image} alt="list.listName" />
+        <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
+      </>
     ))}
       {/* <ImageList variant="masonry" cols={3} gap={8}>
         {lists.map((item) => (
