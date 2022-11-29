@@ -10,6 +10,7 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
 import Image from '../images/image_placeholder.png';
+import { Link } from 'react-router-dom';
 
 const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
@@ -18,6 +19,7 @@ const SearchResults = () => {
 
   const { searchValue } = useContext(AppContext);
   const { siteData, setSiteData } = useContext(AppContext);
+  const { favorites, setFavorites } = useContext(AppContext);
 
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
@@ -28,8 +30,6 @@ const SearchResults = () => {
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-
-  const [favorites, setFavorites] = useState([]);
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
@@ -98,7 +98,6 @@ const SearchResults = () => {
   if (isLoading) {
     return <>Loading...</>;
   }
-
   const handleAddToFavorites = async () => {
     console.log(siteData);
     const favItem = favorites.find((item) => item === siteData.siteId);
@@ -124,8 +123,6 @@ const SearchResults = () => {
         }
        }
   };
-
- console.log(favorites);
 
   return (
     <>
@@ -177,7 +174,7 @@ const SearchResults = () => {
                           disableSpacing
                           sx={{ display: 'flex', width: '100%', position: 'relative' }}
                         >
-                           <IconButton aria-label="add to favorites" sx={favorites.indexOf(site.properties.xid) > 0  ?  { color: "red"} : {color: "grey"  }}   onClick={handleAddToFavorites}>
+                           <IconButton aria-label="add to favorites"  onClick={handleAddToFavorites} sx={favorites.indexOf(site.properties.xid) >= 0  ?  { color: "red"} : {color: "grey"  }}>
                             <FavoriteIcon />
                           </IconButton>
                           <IconButton
@@ -189,11 +186,9 @@ const SearchResults = () => {
                           </IconButton>
                           <Button
                             size="small"
-                            component="a"
-                            href={`/search/${site.properties.xid}`}
                             sx={{ position: 'absolute', right: 10, bottom: 0 }}
                           >
-                            Learn More
+                           <Link to={`/search/${site.properties.xid}`}>Learn more</Link>
                           </Button>
                         </CardActions>
                       </>

@@ -8,8 +8,10 @@ import {
   deleteOneFavorite,
   createUser,
   findUser,
-  updateList,
+  addToList,
   getLists,
+  deleteFromList,
+  deleteList
 } from './models.js';
 import { fileURLToPath } from 'url';
 import { getRadius, getWiki } from './opentrip.js';
@@ -91,8 +93,26 @@ app.patch('/api/list/favorites', async (req, res) => {
 
 app.patch('/api/lists/:listName', async (req, res) => {
   try {
-    const data = await updateList(req.body.email, req.body.siteData, req.body.searchValue);
+    const data = await addToList(req.body.email, req.body.siteData, req.body.searchValue);
     res.json(data);
+  } catch(e) {
+    console.error(e)
+  }
+});
+
+app.delete('/api/lists/:listName', async (req, res) => {
+  try {
+    const data = await deleteList(req.body.email, req.body.listName);
+    res.json();
+  } catch(e) {
+    console.error(e)
+  }
+});
+
+app.patch('/api/lists/listName/:id', async (req, res) => {
+  try {
+    const data = await deleteFromList(req.body.email, req.body.list, req.body.id);
+    res.json();
   } catch(e) {
     console.error(e)
   }

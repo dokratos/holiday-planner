@@ -43,7 +43,7 @@ const deleteOneFavorite = async (userEmail, siteId) => {
   }
 };
 
-const updateList = async (userEmail, siteData, searchValue) => {
+const addToList = async (userEmail, siteData, searchValue) => {
   try {
     const db = await dbConnect();
     const collection = db.collection('users');
@@ -58,6 +58,32 @@ const updateList = async (userEmail, siteData, searchValue) => {
 
     const result = await collection.findOne({ email: userEmail }, {});
     return result.favorites;
+  } catch(e) {
+    console.error(e)
+  }
+}
+
+const deleteFromList = async (email, list, id) => {
+  try {
+    const db = await dbConnect();
+    const collection = db.collection('users');
+    await collection.updateOne(
+      { "email": email, "lists.listName": list }, 
+      { "$pull": { "lists.$.sites": {siteId: id}} })
+    return;
+  } catch(e) {
+    console.error(e)
+  }
+}
+
+const deleteList = async (email, listName) => {
+  try {
+    const db = await dbConnect();
+    const collection = db.collection('users');
+    await collection.updateOne(
+      { "email": email }, 
+      { "$pull": { "lists": {listName: listName}} })
+    return;
   } catch(e) {
     console.error(e)
   }
@@ -109,6 +135,8 @@ export {
   deleteOneFavorite,
   createUser,
   findUser,
-  updateList,
-  getLists
+  addToList,
+  getLists,
+  deleteFromList,
+  deleteList
 };

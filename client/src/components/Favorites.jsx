@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import Card from './Card';
+import { AppContext } from '../AppProvider';
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState();
@@ -10,6 +11,7 @@ const Favorites = () => {
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
+  const { searchValue } = useContext(AppContext);
 
   useEffect(() => {
     const getFavorites = async () => {
