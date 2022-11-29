@@ -115,7 +115,7 @@ const SearchResults = () => {
             mapContainerStyle={{ width: '100%', height: '150vh' }}
             options={{
               zoomControl: true,
-              streetViewControl: true,
+              streetViewControl: false,
               mapTypeControl: true,
               fullscreenControl: true,
               minZoom: 11,

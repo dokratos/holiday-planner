@@ -1,4 +1,5 @@
 import React, { useContext, useEffect } from 'react';
+import { Link } from "react-router-dom";
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
@@ -42,6 +43,16 @@ const Lists = () => {
   }, []);
 
   return (
+    //<>
+    //{lists?.map(list => (
+      //<>
+        //<img src={list.image} alt="list.listName" />
+       // <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
+      //</>
+  //  ))}
+     // {/* <ImageList variant="masonry" cols={3} gap={8}>
+       // {lists.map((item) => (
+        //  <ImageListItem key={item.img}>
     <Link to='/list'>
       <ImageList variant="masonry" cols={mediaQueries ? 1 : 3 } gap={8}>
         {lists?.map((item) => (
