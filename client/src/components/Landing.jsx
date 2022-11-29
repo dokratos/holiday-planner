@@ -28,26 +28,6 @@ const Landing = () => {
           Welcome to PLANit
         </Typography>
         <main style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
-          <Link
-            to="/signup"
-            style={{
-              textDecoration: 'none'
-            }}
-          >
-            <Button variant="contained" size="large" sx={{ backgroundColor: '#2b3a07' }}>
-              Sign Up
-            </Button>
-          </Link>
-          <Link
-            to="/login"
-            style={{
-              textDecoration: 'none'
-            }}
-          >
-            <Button variant="contained" size="large" sx={{ backgroundColor: '#2b3a07' }}>
-              Login
-            </Button>
-          </Link>
         </main>
       </Box>
       <SearchField />

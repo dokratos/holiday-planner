@@ -7,6 +7,10 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
+import IconButton from '@mui/material/IconButton';
+import InfoIcon from '@mui/icons-material/Info';
+import { Box, Button, Container, Typography } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 const theme = createTheme({
   breakpoints: {
@@ -19,6 +23,7 @@ const theme = createTheme({
 
 const Lists = () => {
   const { lists, setLists } = useContext(AppContext);
+  const navigate = useNavigate();
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
@@ -42,16 +47,33 @@ const Lists = () => {
   }, []);
 
   return (
-    //<>
-    //{lists?.map(list => (
-    //<>
-    //<img src={list.image} alt="list.listName" />
-    // <h2 style={{ textTransform: 'capitalize' }}>{list.listName}</h2>
-    //</>
-    //  ))}
-    // {/* <ImageList variant="masonry" cols={3} gap={8}>
-    // {lists.map((item) => (
-    //  <ImageListItem key={item.img}>
+    <>
+      {!user && (
+        <>
+          <Box
+            sx={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              minHeight: '100vh'
+            }}
+          >
+            <Container maxWidth="md">
+              <Typography variant="h2">Oh no! It seems like you are not logged in :(</Typography>
+              <Typography variant="h6" style={{ marginTop: '1rem' }}>
+                Please log in to add favorites
+              </Typography>
+              <Button
+                variant="contained"
+                style={{ backgroundColor: 'rgb(91 150 147)', marginTop: '1rem' }}
+                onClick={() => navigate('/signup')}
+              >
+                Log in
+              </Button>
+            </Container>
+          </Box>
+        </>
+      )}
     <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
       {lists?.map((item) => (
         <Link to={`/lists/${item.listName}`} key={item.image}>
@@ -66,6 +88,7 @@ const Lists = () => {
         </Link>
       ))}
     </ImageList>
+   </> 
   );
 };
 

@@ -107,40 +107,6 @@ app.get('/api/lists', async (req, res) => {
   }
 });
 
-app.post('/api/signup', async (req, res) => {
-  try {
-    if (req.body.credential) {
-      const verificationResponse = await verifyGoogleToken(req.body.credential);
-
-      if (verificationResponse.error) {
-        return res.status(400).json({
-          message: verificationResponse.error,
-        });
-      }
-
-      const profile = verificationResponse?.payload;
-
-      await createUser(profile);
-
-      res.status(201).json({
-        message: 'Signup was successful',
-        user: {
-          firstName: profile?.given_name,
-          lastName: profile?.family_name,
-          email: profile?.email,
-          token: jwt.sign({ email: profile?.email }, 'mySecret', {
-            expiresIn: "1d",
-          }),
-        },
-      });
-    }
-  } catch (error) {
-    res.status(500).json({
-      message: 'An error occurred. Registration failed.',
-    });
-  }
-});
-
 app.post("/api/login", async (req, res) => {
   try {
     if (req.body.credential) {

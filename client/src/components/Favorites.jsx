@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, Button, Container, Typography } from '@mui/material';
-import Card from './Card';
 import { useNavigate } from 'react-router-dom';
+import Card from './Card';
 
 const Favorites = () => {
   const [favorites, setFavorites] = useState();
