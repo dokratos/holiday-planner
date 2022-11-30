@@ -50,7 +50,6 @@ export default function SearchField() {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 1,
           [theme.breakpoints.down('sm')]: {
             width: '350px'
           },

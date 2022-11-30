@@ -85,34 +85,34 @@ const Lists = () => {
         </>
       )}
       <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
-      {lists?.map((item) => (
-        <ImageListItem key={item.image}>
-          <div>
-          <Link to={`/lists/${item.listName}`} >
-            <img
-            style={{ width: '100%'}}
-              src={item.image}
-              alt={item.listName}
-              loading="lazy"
+        {lists?.map((item) => (
+          <ImageListItem key={item.image}>
+            <div>
+              <Link to={`/lists/${item.listName}`}>
+                <img
+                  style={{ width: '100%' }}
+                  src={item.image}
+                  alt={item.listName}
+                  loading="lazy"
+                />
+              </Link>
+            </div>
+            <ImageListItemBar
+              sx={{ textTransform: 'capitalize' }}
+              title={item.listName}
+              actionIcon={
+                <IconButton
+                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                  aria-label={`info about ${item.title}`}
+                  onClick={(e) => handleDeleteList(e, item.listName)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              }
             />
-          </Link>
-          </div>
-          <ImageListItemBar
-            sx={{ textTransform: 'capitalize' }}
-            title={item.listName}
-            actionIcon={
-              <IconButton
-                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                aria-label={`info about ${item.title}`}
-                onClick={(e) => handleDeleteList(e, item.listName)}
-              >
-              <DeleteIcon />
-            </IconButton>
-            }
-          />
-        </ImageListItem>
-      ))}
-    </ImageList>
+          </ImageListItem>
+        ))}
+      </ImageList>
     </>
   );
 };

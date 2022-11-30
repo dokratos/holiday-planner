@@ -146,16 +146,22 @@ const Site = () => {
   };
 
   return (
-    <div
-      style={{ maxWidth: '100vw' }}
-    >
-      <div
-        style={{ margin: 'auto' }}
-      >
+    <div style={{ maxWidth: '100vw' }}>
+      <div style={{ margin: 'auto' }}>
         <h2 style={{ fontSize: '4.4vw' }}>{siteData.name}</h2>
-        <img style={{ maxWidth: '50vw'}} alt={siteData.name} src={siteData.image}/>
-        <p style={{ margin: '3vw 10vw', width: '60vw', marginLeft: 'auto', marginRight: 'auto', fontSize: '20px'}}>{siteData.text}</p>
-        <div style={{ display: 'flex', justifyContent: 'space-around'}}>
+        <img style={{ maxWidth: '50vw' }} alt={siteData.name} src={siteData.image} />
+        <p
+          style={{
+            margin: '3vw 10vw',
+            width: '60vw',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            fontSize: '20px'
+          }}
+        >
+          {siteData.text}
+        </p>
+        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
           <IconButton>
             <Link to="/search">
               <ArroBackIcon />
@@ -171,7 +177,7 @@ const Site = () => {
                   : { color: 'grey' }
               }
             >
-            <FavoriteIcon />
+              <FavoriteIcon />
             </IconButton>
             {addToList && (
               <IconButton

@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-import { Box, Button, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
-import Card from './Card';
 import { AppContext } from '../AppProvider';
+import { Box, Button, Container, Typography } from '@mui/material';
+import Card from './Card';
 
 const Favorites = () => {
   const { favorites, setFavorites } = useContext(AppContext);
@@ -11,9 +11,7 @@ const Favorites = () => {
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
-  const { searchValue } = useContext(AppContext);
 
-  console.log(favorites, 'fav');
   useEffect(() => {
     const getFavorites = async () => {
       try {
@@ -69,14 +67,15 @@ const Favorites = () => {
           </Box>
         </>
       )}
-
       <h1>Favorites</h1>
       <Box
         sx={{
           display: 'flex',
-          flexFlow: 'row wrap',
-          justifyContent: 'start',
-          gap: '5vw'
+          flexDirection: 'column',
+          flexFlow: 'wrap',
+          justifyContent: 'center',
+          gap: '2vw',
+          margin: '0 0.5rem'
         }}
       >
         {favorites?.map((fav) => (
