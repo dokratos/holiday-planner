@@ -5,22 +5,7 @@ import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Box from '@mui/material/Box';
-import { createTheme } from "@mui/material/styles";
-// import { createTheme, ThemeProvider, useTheme } from '@materialui/core/styles';
-
-
-
-// const styles = (theme) => ({
-//   root: {
-//     // backgroundColor: 'blue',
-//     // Match [md, md + 1)
-//     //       [md, lg)
-//     //       [900px, 1200px)
-//     [theme.breakpoints.only('sm')]: {
-//       width: '350px'
-//     }
-//   }
-// });
+import { useTheme } from '@mui/material/styles';
 
 export default function SearchField() {
   const { searchValue, setSearchValue } = useContext(AppContext);
@@ -37,20 +22,16 @@ export default function SearchField() {
     setValue(value);
   };
 
-  // const theme = createTheme({
-  //   breakpoints: {
-  //     values: {
-  //       xs: 0,
-  //       sm: 600,
-  //       md: 900,
-  //       lg: 1200,
-  //       xl: 1536
-  //     }
-  //   }
-  // });
+  const theme = useTheme({
+    breakpoints: {
+      values: {
+        sm: 600
+      }
+    }
+  });
 
   return (
-    <Box 
+    <Box
       sx={{
         width: 'auto',
         padding: '20px',
@@ -62,19 +43,21 @@ export default function SearchField() {
       }}
     >
       <Paper
-      
         component="form"
-        sx={{
+        sx={(theme) => ({
           p: '2px 4px',
           display: 'flex',
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          width: '60%',
-          // width: {
-          //   sm:'350px'
-          // }
-        }}
+          width: 1,
+          [theme.breakpoints.down('sm')]: {
+            width: '350px'
+          },
+          [theme.breakpoints.up('sm')]: {
+            width: '80%'
+          }
+        })}
         onSubmit={handleSubmit}
       >
         <InputBase
