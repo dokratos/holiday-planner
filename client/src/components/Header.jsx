@@ -58,7 +58,6 @@ function ResponsiveAppBar() {
   };
 
   const handleOpenUserMenu = (event) => {
-    console.log(event, 'open USER menu');
     setAnchorElUser(event.currentTarget);
   };
 
@@ -82,7 +81,6 @@ function ResponsiveAppBar() {
     <AppBar position="static" sx={{ backgroundColor: ' #324021a3' }}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
-          {/* <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} /> */}
           <Typography
             variant="h6"
             noWrap
@@ -132,7 +130,12 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" component="a" href={`/${page.toLowerCase()}`} sx={{color: "#413636"}}>
+                  <Typography
+                    textAlign="center"
+                    component="a"
+                    href={`/${page.toLowerCase()}`}
+                    sx={{ color: '#413636' }}
+                  >
                     {page}
                   </Typography>
                 </MenuItem>
@@ -207,21 +210,31 @@ function ResponsiveAppBar() {
                         component="a"
                         href={`/`}
                         onClick={handleLogout}
-                        sx={{textDecoration: "none", color: "#413636"}}
+                        sx={{ textDecoration: 'none', color: '#413636' }}
                       >
                         {authSetting}
                       </Typography>
                     ) : (
-                      <Typography textAlign="center" component="a" href={`/${authSetting}`} sx={{textDecoration: "none", color: "#413636"}}>
+                      <Typography
+                        textAlign="center"
+                        component="a"
+                        href={`/${authSetting}`}
+                        sx={{ textDecoration: 'none', color: '#413636' }}
+                      >
                         {authSetting}
                       </Typography>
                     )}
                   </MenuItem>
                 ))
               ) : (
-                <Link to="/login" sx={{textDecoration: "none"}}>
+                <Link to="/login" sx={{ textDecoration: 'none' }}>
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center" sx={{textDecoration: "none", color: "#413636"}}>Login</Typography>
+                    <Typography
+                      textAlign="center"
+                      sx={{ textDecoration: 'none', color: '#413636' }}
+                    >
+                      Login
+                    </Typography>
                   </MenuItem>
                 </Link>
               )}

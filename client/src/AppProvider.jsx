@@ -8,6 +8,7 @@ const AppProvider = ({ children }) => {
   const [siteData, setSiteData] = useState({});
   const [lists, setLists] = useState([]);
   const [favorites, setFavorites] = useState([]);
+  const [addToList, setAddToList] = useState(true);
 
   return (
     <AppContext.Provider
@@ -21,7 +22,9 @@ const AppProvider = ({ children }) => {
         lists,
         setLists,
         favorites,
-        setFavorites
+        setFavorites,
+        addToList,
+        setAddToList
       }}
     >
       {children}

@@ -1,10 +1,26 @@
 import React, { useContext, useState } from 'react';
+import { AppContext } from '../AppProvider';
 import Paper from '@mui/material/Paper';
 import InputBase from '@mui/material/InputBase';
 import IconButton from '@mui/material/IconButton';
 import SearchIcon from '@mui/icons-material/Search';
 import Box from '@mui/material/Box';
-import { AppContext } from '../AppProvider';
+
+// import { createTheme, ThemeProvider, useTheme } from '@materialui/core/styles';
+
+
+
+// const styles = (theme) => ({
+//   root: {
+//     // backgroundColor: 'blue',
+//     // Match [md, md + 1)
+//     //       [md, lg)
+//     //       [900px, 1200px)
+//     [theme.breakpoints.only('sm')]: {
+//       width: '350px'
+//     }
+//   }
+// });
 
 export default function SearchField() {
   const { searchValue, setSearchValue } = useContext(AppContext);
@@ -21,10 +37,23 @@ export default function SearchField() {
     setValue(value);
   };
 
+  // const theme = createTheme({
+  //   breakpoints: {
+  //     values: {
+  //       xs: 0,
+  //       sm: 600,
+  //       md: 900,
+  //       lg: 1200,
+  //       xl: 1536
+  //     }
+  //   }
+  // });
+
   return (
-    <Box
+    <Box 
       sx={{
         width: 'auto',
+        padding: '20px',
         backgroundImage: `url(${Image})`,
         backgroundSize: 'cover',
         display: 'flex',
@@ -33,6 +62,7 @@ export default function SearchField() {
       }}
     >
       <Paper
+      
         component="form"
         sx={{
           p: '2px 4px',
@@ -40,9 +70,10 @@ export default function SearchField() {
           flexDirection: 'row',
           alignItems: 'center',
           justifyContent: 'center',
-          width: 400,
-          marginTop: '30px',
-          marginBottom: '30px'
+          width: '60%',
+          // width: {
+          //   sm:'350px'
+          // }
         }}
         onSubmit={handleSubmit}
       >

@@ -8,7 +8,6 @@ import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import IconButton from '@mui/material/IconButton';
-import InfoIcon from '@mui/icons-material/Info';
 import { Box, Button, Container, Typography } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -85,7 +84,7 @@ const Lists = () => {
           </Box>
         </>
       )}
-      <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
+      {/* <ImageList cols={mediaQueries ? 1 : 2} gap={8}>
         {lists?.map((item) => (
           <ImageListItem key={item.image}>
             <Link to={`/lists/${item.listName}`}>
@@ -110,7 +109,33 @@ const Lists = () => {
             />
           </ImageListItem>
         ))}
-      </ImageList>
+      </ImageList> */}
+      <ImageList>
+      {lists?.map((item) => (
+        <ImageListItem key={item.image}>
+          <Link to={`/lists/${item.listName}`}>
+            <img
+              src={item.image}
+              alt={item.listName}
+              loading="lazy"
+            />
+          </Link>
+          <ImageListItemBar
+            sx={{ textTransform: 'capitalize' }}
+            title={item.listName}
+            actionIcon={
+              <IconButton
+                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                aria-label={`info about ${item.title}`}
+                onClick={(e) => handleDeleteList(e, item.listName)}
+              >
+              <DeleteIcon />
+            </IconButton>
+            }
+          />
+        </ImageListItem>
+      ))}
+    </ImageList>
     </>
   );
 };

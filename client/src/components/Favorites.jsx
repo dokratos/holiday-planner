@@ -6,15 +6,14 @@ import Card from './Card';
 import { AppContext } from '../AppProvider';
 
 const Favorites = () => {
-  const {favorites, setFavorites} = useContext(AppContext);
+  const { favorites, setFavorites } = useContext(AppContext);
   const navigate = useNavigate();
-  
+
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
   const { searchValue } = useContext(AppContext);
 
-
-  console.log(favorites, "fav")
+  console.log(favorites, 'fav');
   useEffect(() => {
     const getFavorites = async () => {
       try {

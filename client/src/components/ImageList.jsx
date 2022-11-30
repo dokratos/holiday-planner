@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 import Typography from '@mui/material/Typography';
-import './ImageList.css';
 import Paris from '../images/imageListImages/paris.jpg';
 import Rome from '../images/imageListImages/rome.jpg';
 import TelAviv from '../images/imageListImages/TelAviv.jpg';
@@ -10,6 +9,7 @@ import London from '../images/imageListImages/london.jpg';
 import Lisbon from '../images/imageListImages/lisbon.jpg';
 import NewYork from '../images/imageListImages/newYork.jpg';
 import Ibiza from '../images/imageListImages/slow-ibiza.jpg';
+import Madrid from '../images/imageListImages/madrid.jpg';
 import { Navigate } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
 
@@ -26,14 +26,14 @@ export default function StandardImageList() {
     setSearchValue(e.target.innerText);
   };
 
-  console.log(searchValue, 'imagelist');
   return (
     <ImageList>
       {itemData.map((item) => (
         <ImageListItem key={item.img}>
           <img
-            src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
-            srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+            sx={{}}
+            src={item.img}
+            // src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
             alt={item.title}
             name={item.title}
             loading="lazy"
@@ -77,6 +77,10 @@ const itemData = [
   {
     img: `${Ibiza}`,
     title: 'Ibiza'
+  },
+  {
+    img: `${Madrid}`,
+    title: 'Madrid'
   }
   //   {
   //     img: 'https://images.unsplash.com/photo-1444418776041-9c7e33cc5a9c',

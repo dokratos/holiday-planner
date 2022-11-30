@@ -1,5 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 import axios from 'axios';
+import { Link } from 'react-router-dom';
 import { useJsApiLoader, GoogleMap, Marker, InfoWindow } from '@react-google-maps/api';
 import { AppContext } from '../AppProvider';
 import Box from '@mui/material/Box';
@@ -9,8 +10,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import Image from '../images/image_placeholder.png';
-import { Link } from 'react-router-dom';
 
 const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
@@ -21,7 +26,6 @@ const SearchResults = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const { favorites, setFavorites } = useContext(AppContext);
 
-  console.log(favorites, "search")
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
   const [markerImage, setMarkerImage] = useState('');
@@ -31,6 +35,7 @@ const SearchResults = () => {
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
@@ -47,22 +52,22 @@ const SearchResults = () => {
     return response;
   };
 
-
   useEffect(() => {
-    const getFavorites = async () => {
-      try {
-        const response = await axios.get('/api/list/favorites', {
-          params: { email: localUser.email }
-        });
+    if (user) {
+      const getFavorites = async () => {
+        try {
+          const response = await axios.get('/api/list/favorites', {
+            params: { email: localUser.email }
+          });
 
-        setFavorites(response.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
-    getFavorites();
+          setFavorites(response.data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      getFavorites();
+    }
   }, []);
-
 
   useEffect(() => {
     const getData = async () => {
@@ -116,8 +121,8 @@ const SearchResults = () => {
   if (isLoading) {
     return <>Loading...</>;
   }
-  const handleAddToFavorites = async () => {
 
+  const handleAddToFavorites = async () => {
     const favItem = favorites.find((item) => item.siteId === siteData.siteId);
     if (!favItem) {
       setFavorites([...favorites, siteData]);
@@ -138,14 +143,20 @@ const SearchResults = () => {
           id: siteData.siteId,
           email: localUser.email
         });
-        console.log(response.data);
       } catch (err) {
         console.error(err);
       }
     }
   };
 
-  
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <>
       <SearchField />
@@ -198,9 +209,10 @@ const SearchResults = () => {
                         >
                           <IconButton
                             aria-label="add to favorites"
-                            onClick={handleAddToFavorites}
+                            onClick={user ? handleAddToFavorites : handleClickOpen}
                             sx={
-                              favorites.findIndex(item => item.siteId === site.properties.xid) >= 0
+                              favorites.findIndex((item) => item.siteId === site.properties.xid) >=
+                              0
                                 ? { color: 'red' }
                                 : { color: 'grey' }
                             }
@@ -210,7 +222,7 @@ const SearchResults = () => {
                           <IconButton
                             aria-label="share"
                             sx={{ color: 'green' }}
-                            onClick={handleAddToList}
+                            onClick={user ? handleAddToList : handleClickOpen}
                           >
                             <AddIcon />
                           </IconButton>
@@ -226,6 +238,25 @@ const SearchResults = () => {
             })}
           </GoogleMap>
         )}
+        <Dialog
+          open={open}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
+        >
+          <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Please sign in to add to a list
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+            <Button>
+              <Link to="/login">Login</Link>
+            </Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </>
   );

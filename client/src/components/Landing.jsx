@@ -5,11 +5,12 @@ import Image from '../images/bg_main.jpg';
 import Typography from '@mui/material/Typography';
 import SearchField from './SearchField';
 import ImageList from './ImageList';
+import Info from './Info';
 import { AppContext } from '../AppProvider';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 import IconButton from '@mui/material/IconButton';
 
-function Landing (){
+function Landing() {
   const { searchValue } = useContext(AppContext);
   const scrollToRef = useRef();
 
@@ -17,35 +18,42 @@ function Landing (){
     <>
       <Box
         sx={{
-          height: '100%',
+          height: '100vh',
           width: 'auto',
           backgroundImage: `url(${Image})`,
           backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center'
+          justifyContent: 'space-around'
         }}
       >
-        <Typography variant="h1" sx={{ color: '#fefff9' }}>
+        <Typography
+          variant="h1"
+          sx={{
+            fontSize: '4rem',
+            color: '#fefff9',
+            backgroundColor: 'rgba(50, 64, 33, 0.3)'
+          }}
+        >
           Welcome to PLANit
         </Typography>
-        <Typography
-          variant="h5"
-          sx={{ color: '#ff5722', backgroundColor: 'white', fontWeight: 600 }}
-        >
-          Plan your trip to wisely!
-        </Typography>
 
-        <IconButton onClick={() => scrollToRef?.current.scrollIntoView({behavior: "smooth"})} >
-          <ArrowDownwardIcon  sx={{ color: 'white', fontSize: '50px', fontWeight: 300}}/>
+        <IconButton onClick={() => scrollToRef?.current.scrollIntoView({ behavior: 'smooth' })}>
+          <ArrowDownwardIcon sx={{ color: 'white', fontSize: '70px', fontWeight: 300 }} />
         </IconButton>
-        <main ref={scrollToRef} style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}></main>
       </Box>
-      <SearchField/>
+      <main
+        ref={scrollToRef}
+        style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}
+      ></main>
+      <SearchField />
       {searchValue && <Navigate to="/search" />}
+      <Info />
       <ImageList />
     </>
   );
-};
+}
 
 export default Landing;

@@ -30,7 +30,9 @@ const Login = () => {
   return (
     <>
       <nav style={{ padding: '2rem' }}>
-        <Link to="/" style={{ color: '#ff5722' }}>Go Back</Link>
+        <Link to="/" style={{ color: '#ff5722' }}>
+          Go Back
+        </Link>
       </nav>
       <header style={{ textAlign: 'center' }}>
         <h1>Login to continue</h1>
