@@ -11,6 +11,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import IconButton from '@mui/material/IconButton';
 import AddIcon from '@mui/icons-material/Add';
+import ArroBackIcon from '@mui/icons-material/ArrowBack';
 
 const Site = () => {
   const { searchValue } = useContext(AppContext);
@@ -145,53 +146,65 @@ const Site = () => {
   };
 
   return (
-    <>
-      <h2 style={{fontSize: '5vw'}}>{siteData.name}</h2>
-      <img alt={siteData.name} src={siteData.image} style={{height: '25vw'}} />
-      <p style={{margin: '3vw 10vw'}}>{siteData.text}</p>
-      <IconButton
-        aria-label="Add to favorites"
-        onClick={user ? handleAddToFavorites : handleClickOpen}
-        sx={
-          favorites.findIndex((item) => item.siteId === siteData.siteId) >= 0
-            ? { color: 'red' }
-            : { color: 'grey' }
-        }
+    <div
+      style={{ maxWidth: '100vw' }}
+    >
+      <div
+        style={{ margin: 'auto' }}
       >
-        <FavoriteIcon />
-      </IconButton>
-      {addToList && (
-        <IconButton
-          aria-label="Add to list"
-          sx={{ color: 'green' }}
-          onClick={user ? handleAddToList : handleClickOpen}
+        <h2 style={{ fontSize: '4.4vw' }}>{siteData.name}</h2>
+        <img style={{ width: '60vw'}} alt={siteData.name} src={siteData.image}/>
+        <p style={{ margin: '3vw 10vw', width: '60vw', marginLeft: 'auto', marginRight: 'auto', fontSize: '20px'}}>{siteData.text}</p>
+        <div style={{ display: 'flex', justifyContent: 'space-around'}}>
+          <IconButton>
+            <Link to="/search">
+              <ArroBackIcon />
+            </Link>
+          </IconButton>
+          <div>
+            <IconButton
+              aria-label="Add to favorites"
+              onClick={user ? handleAddToFavorites : handleClickOpen}
+              sx={
+                favorites.findIndex((item) => item.siteId === siteData.siteId) >= 0
+                  ? { color: 'red' }
+                  : { color: 'grey' }
+              }
+            >
+            <FavoriteIcon />
+            </IconButton>
+            {addToList && (
+              <IconButton
+                aria-label="Add to list"
+                sx={{ color: 'green' }}
+                onClick={user ? handleAddToList : handleClickOpen}
+              >
+                <AddIcon />
+              </IconButton>
+            )}
+          </div>
+        </div>
+        <Dialog
+          open={open}
+          keepMounted
+          onClose={handleClose}
+          aria-describedby="alert-dialog-slide-description"
         >
-          <AddIcon />
-        </IconButton>
-      )}
-      <Dialog
-        open={open}
-        keepMounted
-        onClose={handleClose}
-        aria-describedby="alert-dialog-slide-description"
-      >
-        <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            Please sign in to add to a list
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Close</Button>
-          <Button>
-            <Link to="/login">Login</Link>
-          </Button>
-        </DialogActions>
-      </Dialog>
-      <button>
-        <Link to="/search">Back</Link>
-      </button>
-    </>
+          <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-slide-description">
+              Please sign in to add to a list
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose}>Close</Button>
+            <Button>
+              <Link to="/login">Login</Link>
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
+    </div>
   );
 };
 
