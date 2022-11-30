@@ -62,6 +62,7 @@ const Site = () => {
       <img alt={siteData.name} src={siteData.image} />
       <p>{siteData.text}</p>
       <button onClick={user ? handleAddClick : handleClickOpen}>Add</button>
+      
       <Dialog
         open={open}
         keepMounted

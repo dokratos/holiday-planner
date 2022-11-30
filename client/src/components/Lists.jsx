@@ -50,12 +50,12 @@ const Lists = () => {
   const handleDeleteList = async (e, listName) => {
     e.stopPropagation();
     try {
-      await axios.delete(`/api/lists/${listName}`, {data: { listName, email: localUser.email }});
-      setLists(lists.filter(list => list.listName !== listName));
+      await axios.delete(`/api/lists/${listName}`, { data: { listName, email: localUser.email } });
+      setLists(lists.filter((list) => list.listName !== listName));
     } catch (err) {
       console.error(err);
     }
-  }
+  };
 
   return (
     <>
@@ -76,7 +76,7 @@ const Lists = () => {
               </Typography>
               <Button
                 variant="contained"
-                style={{ backgroundColor: 'rgb(91 150 147)', marginTop: '1rem' }}
+                style={{ backgroundColor: 'rgb(101 116 83)', marginTop: '1rem' }}
                 onClick={() => navigate('/signup')}
               >
                 Log in
@@ -85,35 +85,33 @@ const Lists = () => {
           </Box>
         </>
       )}
-    <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
-      {lists?.map((item) => (
-        
+      <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
+        {lists?.map((item) => (
           <ImageListItem key={item.image}>
-            <Link to={`/lists/${item.listName}`} >
-            <img
-              src={`${item.image}?w=248&fit=crop&auto=format`}
-              alt={item.listName}
-              loading="lazy"
-            />
-             </Link>
+            <Link to={`/lists/${item.listName}`}>
+              <img
+                src={`${item.image}?w=248&fit=crop&auto=format`}
+                alt={item.listName}
+                loading="lazy"
+              />
+            </Link>
             <ImageListItemBar
-            sx={{ textTransform: 'capitalize' }} 
-            title={item.listName}
-            actionIcon={
-              <IconButton
-                sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                aria-label={`info about ${item.title}`}
-                onClick={(e) => handleDeleteList(e, item.listName)}
-              >
-                <DeleteIcon />
-              </IconButton>
-            }
-          />
+              sx={{ textTransform: 'capitalize' }}
+              title={item.listName}
+              actionIcon={
+                <IconButton
+                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
+                  aria-label={`info about ${item.title}`}
+                  onClick={(e) => handleDeleteList(e, item.listName)}
+                >
+                  <DeleteIcon />
+                </IconButton>
+              }
+            />
           </ImageListItem>
-       
-      ))}
-    </ImageList>
-   </> 
+        ))}
+      </ImageList>
+    </>
   );
 };
 

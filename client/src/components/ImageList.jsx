@@ -26,7 +26,7 @@ export default function StandardImageList() {
     setSearchValue(e.target.innerText);
   };
 
-  console.log(searchValue, "imagelist")
+  console.log(searchValue, 'imagelist');
   return (
     <ImageList>
       {itemData.map((item) => (

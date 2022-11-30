@@ -6,13 +6,15 @@ import Card from './Card';
 import { AppContext } from '../AppProvider';
 
 const Favorites = () => {
-  const [favorites, setFavorites] = useState();
+  const {favorites, setFavorites} = useContext(AppContext);
   const navigate = useNavigate();
-
+  
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);
   const { searchValue } = useContext(AppContext);
 
+
+  console.log(favorites, "fav")
   useEffect(() => {
     const getFavorites = async () => {
       try {
@@ -59,7 +61,7 @@ const Favorites = () => {
               </Typography>
               <Button
                 variant="contained"
-                style={{ backgroundColor: 'rgb(91 150 147)', marginTop: '1rem' }}
+                style={{ backgroundColor: 'rgb(101 116 83)', marginTop: '1rem' }}
                 onClick={() => navigate('/signup')}
               >
                 Log in
