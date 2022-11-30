@@ -32,12 +32,14 @@ function Landing() {
         <Typography
           variant="h1"
           sx={{
-            fontSize: '4rem',
+            fontFamily: "'Raleway', sans-serif",
+            fontWeight: '700',
+            fontSize: '3rem',
             color: '#fefff9',
             backgroundColor: 'rgba(50, 64, 33, 0.3)'
           }}
         >
-          Welcome to PLANit
+          Plan your next holidays
         </Typography>
 
         <IconButton onClick={() => scrollToRef?.current.scrollIntoView({ behavior: 'smooth' })}>

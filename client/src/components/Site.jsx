@@ -153,7 +153,7 @@ const Site = () => {
         style={{ margin: 'auto' }}
       >
         <h2 style={{ fontSize: '4.4vw' }}>{siteData.name}</h2>
-        <img style={{ width: '60vw'}} alt={siteData.name} src={siteData.image}/>
+        <img style={{ maxWidth: '50vw'}} alt={siteData.name} src={siteData.image}/>
         <p style={{ margin: '3vw 10vw', width: '60vw', marginLeft: 'auto', marginRight: 'auto', fontSize: '20px'}}>{siteData.text}</p>
         <div style={{ display: 'flex', justifyContent: 'space-around'}}>
           <IconButton>
