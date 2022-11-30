@@ -21,6 +21,7 @@ const SearchResults = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const { favorites, setFavorites } = useContext(AppContext);
 
+  console.log(favorites, "search")
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
   const [markerImage, setMarkerImage] = useState('');
@@ -45,6 +46,23 @@ const SearchResults = () => {
     const response = await axios.get(`/api/search/${search}`);
     return response;
   };
+
+
+  useEffect(() => {
+    const getFavorites = async () => {
+      try {
+        const response = await axios.get('/api/list/favorites', {
+          params: { email: localUser.email }
+        });
+
+        setFavorites(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    };
+    getFavorites();
+  }, []);
+
 
   useEffect(() => {
     const getData = async () => {
@@ -99,31 +117,35 @@ const SearchResults = () => {
     return <>Loading...</>;
   }
   const handleAddToFavorites = async () => {
-    console.log(siteData);
-    const favItem = favorites.find((item) => item === siteData.siteId);
-       if (!favItem) {
-       setFavorites([...favorites, siteData.siteId]);
-       try {
-          const data = {
-            siteData,
-            email: localUser.email
-          };
-          return await axios.patch('/api/favorites', data);
+
+    const favItem = favorites.find((item) => item.siteId === siteData.siteId);
+    if (!favItem) {
+      setFavorites([...favorites, siteData]);
+      try {
+        const data = {
+          siteData,
+          email: localUser.email
+        };
+        return await axios.patch('/api/favorites', data);
       } catch (err) {
         console.error(err);
       }
-       } else {
-        const newFavorites = favorites.filter((item) => item !== siteData.siteId);
-         setFavorites(newFavorites) ;
-         try {
-          const response = await axios.patch('/api/list/favorites', { id: siteData.siteId, email: localUser.email });
-          console.log( response.data);
-        } catch (err) {
-          console.error(err);
-        }
-       }
+    } else {
+      const newFavorites = favorites.filter((item) => item.siteId !== siteData.siteId);
+      setFavorites(newFavorites);
+      try {
+        const response = await axios.patch('/api/list/favorites', {
+          id: siteData.siteId,
+          email: localUser.email
+        });
+        console.log(response.data);
+      } catch (err) {
+        console.error(err);
+      }
+    }
   };
 
+  
   return (
     <>
       <SearchField />
@@ -174,7 +196,15 @@ const SearchResults = () => {
                           disableSpacing
                           sx={{ display: 'flex', width: '100%', position: 'relative' }}
                         >
-                           <IconButton aria-label="add to favorites"  onClick={handleAddToFavorites} sx={favorites.indexOf(site.properties.xid) >= 0  ?  { color: "red"} : {color: "grey"  }}>
+                          <IconButton
+                            aria-label="add to favorites"
+                            onClick={handleAddToFavorites}
+                            sx={
+                              favorites.findIndex(item => item.siteId === site.properties.xid) >= 0
+                                ? { color: 'red' }
+                                : { color: 'grey' }
+                            }
+                          >
                             <FavoriteIcon />
                           </IconButton>
                           <IconButton
@@ -184,11 +214,8 @@ const SearchResults = () => {
                           >
                             <AddIcon />
                           </IconButton>
-                          <Button
-                            size="small"
-                            sx={{ position: 'absolute', right: 10, bottom: 0 }}
-                          >
-                           <Link to={`/search/${site.properties.xid}`}>Learn more</Link>
+                          <Button size="small" sx={{ position: 'absolute', right: 10, bottom: 0 }}>
+                            <Link to={`/search/${site.properties.xid}`}>Learn more</Link>
                           </Button>
                         </CardActions>
                       </>

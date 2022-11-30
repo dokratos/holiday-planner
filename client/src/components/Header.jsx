@@ -132,7 +132,7 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center" component="a" href={`/${page.toLowerCase()}`}>
+                  <Typography textAlign="center" component="a" href={`/${page.toLowerCase()}`} sx={{color: "#413636"}}>
                     {page}
                   </Typography>
                 </MenuItem>
@@ -207,20 +207,21 @@ function ResponsiveAppBar() {
                         component="a"
                         href={`/`}
                         onClick={handleLogout}
+                        sx={{textDecoration: "none", color: "#413636"}}
                       >
                         {authSetting}
                       </Typography>
                     ) : (
-                      <Typography textAlign="center" component="a" href={`/${authSetting}`}>
+                      <Typography textAlign="center" component="a" href={`/${authSetting}`} sx={{textDecoration: "none", color: "#413636"}}>
                         {authSetting}
                       </Typography>
                     )}
                   </MenuItem>
                 ))
               ) : (
-                <Link to="/login">
+                <Link to="/login" sx={{textDecoration: "none"}}>
                   <MenuItem onClick={handleCloseUserMenu}>
-                    <Typography textAlign="center">Login</Typography>
+                    <Typography textAlign="center" sx={{textDecoration: "none", color: "#413636"}}>Login</Typography>
                   </MenuItem>
                 </Link>
               )}

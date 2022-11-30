@@ -26,13 +26,13 @@ const List = () => {
   });
 
   const [map, setMap] = useState(null);
-  const [currentList, setCurrentList] = useState(lists.find(item => item.listName === list));
+  const [currentList, setCurrentList] = useState(lists.find((item) => item.listName === list));
   const [center, setCenter] = useState({
     lat: 40.4168,
     lng: -3.70379
   });
   const [isMarkerActive, setIsMarkerActive] = useState(null);
-  
+
   useEffect(() => {
     setCenter((center) => ({
       ...center,
@@ -51,12 +51,19 @@ const List = () => {
     if (id === isMarkerActive) return;
     setIsMarkerActive(id);
   };
-    
+
   const handleRemoveFromList = async (e, id) => {
     e.preventDefault();
     try {
-      await axios.patch(`/api/lists/listName/${id}`, { id: id, list: list, email: localUser.email });
-      setCurrentList({...currentList, sites: currentList.sites.filter(item => item.siteId !== id)})
+      await axios.patch(`/api/lists/listName/${id}`, {
+        id: id,
+        list: list,
+        email: localUser.email
+      });
+      setCurrentList({
+        ...currentList,
+        sites: currentList.sites.filter((item) => item.siteId !== id)
+      });
     } catch (err) {
       console.error(err);
     }
@@ -123,10 +130,7 @@ const List = () => {
                           >
                             <DeleteIcon />
                           </IconButton>
-                          <Button
-                            size="small"
-                            sx={{ position: 'absolute', right: 10, bottom: 0 }}
-                          >
+                          <Button size="small" sx={{ position: 'absolute', right: 10, bottom: 0 }}>
                             <Link to={`/search/${site.siteId}`}>Learn more</Link>
                           </Button>
                         </CardActions>

@@ -18,7 +18,7 @@ function NotFoundPage() {
         <Typography variant="h6">The page you’re looking for doesn’t exist.</Typography>
         <Button
           variant="contained"
-          style={{ backgroundColor: 'rgb(91 150 147)' }}
+          style={{ backgroundColor: 'rgb(101 116 83)' }}
           onClick={() => navigate('/')}
         >
           Back Home

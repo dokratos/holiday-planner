@@ -1,15 +1,17 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Image from '../images/bg_main.jpg';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import SearchField from './SearchField';
 import ImageList from './ImageList';
 import { AppContext } from '../AppProvider';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import IconButton from '@mui/material/IconButton';
 
-const Landing = () => {
+function Landing (){
   const { searchValue } = useContext(AppContext);
+  const scrollToRef = useRef();
 
   return (
     <>
@@ -24,13 +26,22 @@ const Landing = () => {
           justifyContent: 'center'
         }}
       >
-        <Typography variant="h1" gutterBottom sx={{ color: '#fefff9' }}>
+        <Typography variant="h1" sx={{ color: '#fefff9' }}>
           Welcome to PLANit
         </Typography>
-        <main style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}>
-        </main>
+        <Typography
+          variant="h5"
+          sx={{ color: '#ff5722', backgroundColor: 'white', fontWeight: 600 }}
+        >
+          Plan your trip to wisely!
+        </Typography>
+
+        <IconButton onClick={() => scrollToRef?.current.scrollIntoView({behavior: "smooth"})} >
+          <ArrowDownwardIcon  sx={{ color: 'white', fontSize: '50px', fontWeight: 300}}/>
+        </IconButton>
+        <main ref={scrollToRef} style={{ display: 'flex', justifyContent: 'center', gap: '2rem' }}></main>
       </Box>
-      <SearchField />
+      <SearchField/>
       {searchValue && <Navigate to="/search" />}
       <ImageList />
     </>
