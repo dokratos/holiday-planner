@@ -84,42 +84,19 @@ const Lists = () => {
           </Box>
         </>
       )}
-      {/* <ImageList cols={mediaQueries ? 1 : 2} gap={8}>
-        {lists?.map((item) => (
-          <ImageListItem key={item.image}>
-            <Link to={`/lists/${item.listName}`}>
-              <img
-                src={`${item.image}?w=248&fit=crop&auto=format`}
-                alt={item.listName}
-                loading="lazy"
-              />
-            </Link>
-            <ImageListItemBar
-              sx={{ textTransform: 'capitalize' }}
-              title={item.listName}
-              actionIcon={
-                <IconButton
-                  sx={{ color: 'rgba(255, 255, 255, 0.54)' }}
-                  aria-label={`info about ${item.title}`}
-                  onClick={(e) => handleDeleteList(e, item.listName)}
-                >
-                  <DeleteIcon />
-                </IconButton>
-              }
-            />
-          </ImageListItem>
-        ))}
-      </ImageList> */}
-      <ImageList>
+      <ImageList variant="masonry" cols={mediaQueries ? 1 : 3} gap={8}>
       {lists?.map((item) => (
         <ImageListItem key={item.image}>
-          <Link to={`/lists/${item.listName}`}>
+          <div>
+          <Link to={`/lists/${item.listName}`} >
             <img
+            style={{ width: '100%'}}
               src={item.image}
               alt={item.listName}
               loading="lazy"
             />
           </Link>
+          </div>
           <ImageListItemBar
             sx={{ textTransform: 'capitalize' }}
             title={item.listName}
