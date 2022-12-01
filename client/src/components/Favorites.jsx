@@ -59,7 +59,7 @@ const Favorites = () => {
               <Button
                 variant="contained"
                 style={{ backgroundColor: 'rgb(101 116 83)', marginTop: '1rem' }}
-                onClick={() => navigate('/signup')}
+                onClick={() => navigate('/login')}
               >
                 Log in
               </Button>
