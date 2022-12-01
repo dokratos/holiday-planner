@@ -102,7 +102,7 @@ const itemData = [
   },
   {
     img: `${NewYork}`,
-    title: 'New York'
+    title: 'New York City'
   },
   {
     img: `${TelAviv}`,
