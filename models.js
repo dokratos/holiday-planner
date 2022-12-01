@@ -48,6 +48,7 @@ const addToList = async (userEmail, siteData, searchValue) => {
     const db = await dbConnect();
     const collection = db.collection('users');
     const user =  await collection.findOne({ "email": userEmail, "lists.listName": searchValue });
+    console.log(searchValue, 'addtolist - search value')
     if(!user) {
       const image = await getCityImage(searchValue);
       await collection.updateOne({ email: userEmail }, { $addToSet: { lists: { listName: searchValue, image }} });
