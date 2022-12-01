@@ -9,7 +9,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import IconButton from '@mui/material/IconButton';
 import { useTheme } from '@mui/material/styles';
 
-export default function MediaControlCard({ name, id, image, text, handleDelete }) {
+export default function MediaControlCard({ name, city, id, image, text, handleDelete }) {
   const navigate = useNavigate();
 
   const theme = useTheme({
@@ -40,7 +40,7 @@ export default function MediaControlCard({ name, id, image, text, handleDelete }
             component="div"
             sx={{ fontWeight: 'bold' }}
           >
-            {name}
+            {name} - {city}
           </Typography>
           <Typography
             variant="body2"

@@ -15,26 +15,23 @@ import { AppContext } from '../AppProvider';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
 import { useTheme } from '@mui/material/styles';
 
-
-
 export default function StandardImageList() {
   const { searchValue, setSearchValue } = useContext(AppContext);
 
   useEffect(() => {
-    setSearchValue('')
-  }, [])
-  
-  
+    setSearchValue('');
+  }, []);
+
   const redirect = (e) => {
     e.preventDefault();
     setSearchValue(e.target.name);
   };
-  
+
   const redirectTitle = (e) => {
     e.preventDefault();
     setSearchValue(e.target.innerText);
   };
-  
+
   const theme = useTheme({
     breakpoints: {
       values: {
@@ -45,29 +42,27 @@ export default function StandardImageList() {
   });
 
   return (
-    <ImageList 
+    <ImageList
       sx={(theme) => ({
         width: '100%',
         gridAutoFlow: 'column',
         position: 'relative',
         textAlign: 'center',
         overflowX: 'scroll',
-        gridTemplateColumns: "repeat(auto-fill,minmax(20rem,1fr)) !important",
-        gridAutoColumns: "minmax(20rem, 1fr)",
+        gridTemplateColumns: 'repeat(auto-fill,minmax(20rem,1fr)) !important',
+        gridAutoColumns: 'minmax(20rem, 1fr)',
         [theme.breakpoints.down('sm')]: {
-          gridTemplateColumns: "repeat(auto-fill,minmax(10rem,1fr)) !important",
-          gridAutoColumns: "minmax(10rem, 1fr)",
-        },
-      })} 
+          gridTemplateColumns: 'repeat(auto-fill,minmax(10rem,1fr)) !important',
+          gridAutoColumns: 'minmax(10rem, 1fr)'
+        }
+      })}
       cols={8}
-      >
+    >
       {itemData.map((item) => (
-        <ImageListItem 
-        key={item.img}
-        >
+        <ImageListItem key={item.img}>
           <img
             style={{
-              cursor: 'pointer',
+              cursor: 'pointer'
             }}
             src={`${item.img}?w=164&h=164&fit=crop&auto=format`}
             srcSet={`${item.img}?w=164&h=164&fit=crop&auto=format&dpr=2`}
@@ -81,12 +76,12 @@ export default function StandardImageList() {
             title={item.title}
             onClick={redirectTitle}
           />
-          {searchValue && <Navigate to='/search' />}
+          {searchValue && <Navigate to="/search" />}
         </ImageListItem>
       ))}
     </ImageList>
-
-  )}
+  );
+}
 
 const itemData = [
   {

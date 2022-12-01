@@ -61,6 +61,7 @@ const SearchResults = () => {
           });
 
           setFavorites(response.data);
+          console.log(response.data, 'responsedat');
         } catch (err) {
           console.error(err);
         }
@@ -109,10 +110,11 @@ const SearchResults = () => {
     try {
       const data = {
         siteData,
-        searchValue: searchValue.toLowerCase(),
+        // searchValue: searchValue.toLowerCase(),
         email: localUser.email
       };
-      return await axios.patch(`/api/lists/${searchValue}`, data);
+      console.log(siteData.city);
+      return await axios.patch(`/api/lists/${siteData.city}`, data);
     } catch (err) {
       console.error(err);
     }

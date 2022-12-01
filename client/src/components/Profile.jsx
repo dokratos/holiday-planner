@@ -8,9 +8,15 @@ const Profile = () => {
     <>
       {localUser && (
         <>
-          <p><b>First name</b>: {localUser.firstName}</p>
-          <p><b>Last name</b>: {localUser.lastName}</p>
-          <p><b>Email</b>: {localUser.email}</p>
+          <p>
+            <b>First name</b>: {localUser.firstName}
+          </p>
+          <p>
+            <b>Last name</b>: {localUser.lastName}
+          </p>
+          <p>
+            <b>Email</b>: {localUser.email}
+          </p>
         </>
       )}
     </>

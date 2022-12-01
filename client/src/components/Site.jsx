@@ -2,6 +2,8 @@ import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link, useParams } from 'react-router-dom';
 import { AppContext } from '../AppProvider';
+import { useTheme } from '@mui/material/styles';
+import { Box, formHelperTextClasses } from '@mui/material';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -14,6 +16,15 @@ import AddIcon from '@mui/icons-material/Add';
 import ArroBackIcon from '@mui/icons-material/ArrowBack';
 
 const Site = () => {
+  const theme = useTheme({
+    breakpoints: {
+      values: {
+        sm: 600,
+        md: 900
+      }
+    }
+  });
+
   const { searchValue } = useContext(AppContext);
   const { addToList, setAddToList } = useContext(AppContext);
   const { favorites, setFavorites } = useContext(AppContext);
@@ -21,7 +32,7 @@ const Site = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
-
+  console.log(siteData, 'site data in sites');
   let { site } = useParams();
 
   const user = localStorage.getItem('user');
@@ -61,14 +72,14 @@ const Site = () => {
           const response = await axios.get('/api/lists', {
             params: { email: localUser.email }
           });
-          setLists(response.data);            
-          } catch (err) {
-            console.error(err);
-          }
-        };
-        getLists();
-      }
-    }, []);
+          setLists(response.data);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      getLists();
+    }
+  }, []);
 
   const search = [];
   const city = [];
@@ -82,26 +93,25 @@ const Site = () => {
             city.push(item.listName);
           }
           let siteInList = search.includes(site);
-          console.log(siteInList)
           setAddToList(!siteInList);
           return;
         });
       });
-      }
-  }, [lists])
-    
-    if (isLoading) {
-      return <>Loading...</>;
     }
-    
-    const handleClickOpen = () => {
-      setOpen(true);
-    };
-    
-    const handleClose = () => {
-      setOpen(false);
-    };
-    
+  }, [lists]);
+
+  if (isLoading) {
+    return <>Loading...</>;
+  }
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   const handleAddToFavorites = async () => {
     const favItem = favorites.find((item) => item.siteId === siteData.siteId);
     if (!favItem) {
@@ -137,78 +147,110 @@ const Site = () => {
         email: localUser.email
       };
       setAddToList(false);
-      return await axios.patch(`/api/lists/${city[0]}`, data);
+      return await axios.patch(`/api/lists/${siteData.city}`, data);
     } catch (err) {
       console.error(err);
     }
   };
 
   return (
-    <div style={{ maxWidth: '100vw' }}>
-      <div style={{ margin: 'auto' }}>
-        <h2 style={{ fontSize: '4.4vw' }}>{siteData.name}</h2>
-        <img style={{ maxWidth: '50vw' }} alt={siteData.name} src={siteData.image} />
-        <p
-          style={{
-            margin: '3vw 10vw',
-            width: '60vw',
-            marginLeft: 'auto',
-            marginRight: 'auto',
-            fontSize: '20px'
+    <Box
+      sx={(theme) => ({
+        width: '100vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        [theme.breakpoints.up('sm')]: {
+          // margin: '40px 5px'
+        }
+      })}
+    >
+      <h2 style={{ fontSize: '4.4vw' }}>{siteData.name}</h2>
+      <div>
+        <img
+          sx={{
+            [theme.breakpoints.down('sm')]: {
+              maxWidth: '100vw'
+            },
+            [theme.breakpoints.up('sm')]: {
+              maxWidth: '70vw'
+            }
           }}
-        >
-          {siteData.text}
-        </p>
-        <div style={{ display: 'flex', justifyContent: 'space-around' }}>
-          <IconButton>
-            <Link to="/search">
-              <ArroBackIcon />
-            </Link>
-          </IconButton>
-          <div>
-            <IconButton
-              aria-label="Add to favorites"
-              onClick={user ? handleAddToFavorites : handleClickOpen}
-              sx={
-                favorites.findIndex((item) => item.siteId === siteData.siteId) >= 0
-                  ? { color: 'red' }
-                  : { color: 'grey' }
-              }
-            >
-              <FavoriteIcon />
-            </IconButton>
-            {addToList && (
-              <IconButton
-                aria-label="Add to list"
-                sx={{ color: 'green' }}
-                onClick={user ? handleAddToList : handleClickOpen}
-              >
-                <AddIcon />
-              </IconButton>
-            )}
-          </div>
-        </div>
-        <Dialog
-          open={open}
-          keepMounted
-          onClose={handleClose}
-          aria-describedby="alert-dialog-slide-description"
-        >
-          <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-slide-description">
-              Please sign in to add to a list
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleClose}>Close</Button>
-            <Button>
-              <Link to="/login">Login</Link>
-            </Button>
-          </DialogActions>
-        </Dialog>
+          alt={siteData.name}
+          src={siteData.image}
+        />
       </div>
-    </div>
+      <p
+        style={{
+          textAlign: 'left',
+          padding: '0 1.2rem',
+          fontSize: '20px',
+          [theme.breakpoints.up('sm')]: {
+            padding: '0 3rem'
+          }
+        }}
+      >
+        {siteData.text}
+      </p>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          padding: '0 1.2rem',
+          [theme.breakpoints.up('sm')]: {
+            padding: '0 3rem'
+          }
+        }}
+      >
+        <IconButton>
+          <Link to="/search">
+            <ArroBackIcon />
+          </Link>
+        </IconButton>
+        <div>
+          <IconButton
+            aria-label="Add to favorites"
+            onClick={user ? handleAddToFavorites : handleClickOpen}
+            sx={
+              favorites.findIndex((item) => item.siteId === siteData.siteId) >= 0
+                ? { color: 'red' }
+                : { color: 'grey' }
+            }
+          >
+            <FavoriteIcon />
+          </IconButton>
+          {addToList && (
+            <IconButton
+              aria-label="Add to list"
+              sx={{ color: 'green' }}
+              onClick={user ? handleAddToList : handleClickOpen}
+            >
+              <AddIcon />
+            </IconButton>
+          )}
+        </div>
+      </div>
+      <Dialog
+        open={open}
+        keepMounted
+        onClose={handleClose}
+        aria-describedby="alert-dialog-slide-description"
+      >
+        <DialogTitle>{'It looks like you are not signed in'}</DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-slide-description">
+            Please sign in to add to a list
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Close</Button>
+          <Button>
+            <Link to="/login">Login</Link>
+          </Button>
+        </DialogActions>
+      </Dialog>
+      {/* </div> */}
+    </Box>
   );
 };
 

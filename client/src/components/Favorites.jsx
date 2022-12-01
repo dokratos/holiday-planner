@@ -85,7 +85,7 @@ const Favorites = () => {
             name={fav.name}
             image={fav.image}
             text={fav.text}
-            rate={fav.rate}
+            city={fav.city}
             handleDelete={handleDelete}
           />
         ))}
