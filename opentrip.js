@@ -60,7 +60,9 @@ const getWiki = async wikiData => {
 const getCityImage = async listName => {
   const url = `https://pixabay.com/api/?key=${process.env.PIXABAY_API_KEY}&q=${listName}+city&image_type=photo`;
   const results = await axios(url);
-  console.log(results)
+  if(results.data.hits.length === 0 ) {
+    return 'https://pixabay.com/get/g7aeab1da38416c3a92dab8274d4544fdf1aad97182a55252df69882322c3bf4491f90310425a452be2ce8094eccb75f7e4f1091ea741c58a90c1f5eaeb829121_640.jpg'
+  }
   return results.data.hits[0].webformatURL;
 }
 
