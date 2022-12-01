@@ -1,19 +1,18 @@
 import React, { useContext, useEffect } from 'react';
+import { Navigate, Link } from 'react-router-dom';
+import { AppContext } from '../AppProvider';
+import { useTheme } from '@mui/material/styles';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
-import Typography from '@mui/material/Typography';
 import Paris from '../images/imageListImages/paris.jpg';
 import Rome from '../images/imageListImages/rome.jpg';
-import TelAviv from '../images/imageListImages/TelAviv.jpg';
+import LosAngeles from '../images/imageListImages/losAngeles.jpg';
 import London from '../images/imageListImages/london.jpg';
 import Lisbon from '../images/imageListImages/lisbon.jpg';
 import NewYork from '../images/imageListImages/newYork.jpg';
-import Ibiza from '../images/imageListImages/slow-ibiza.jpg';
+import Oslo from '../images/imageListImages/oslo.jpg';
 import Madrid from '../images/imageListImages/madrid.jpg';
-import { Navigate, Link } from 'react-router-dom';
-import { AppContext } from '../AppProvider';
 import ImageListItemBar from '@mui/material/ImageListItemBar';
-import { useTheme } from '@mui/material/styles';
 
 export default function StandardImageList() {
   const { searchValue, setSearchValue } = useContext(AppContext);
@@ -101,15 +100,20 @@ const itemData = [
     title: 'Lisbon'
   },
   {
+    img: `${Madrid}`,
+    title: 'Madrid'
+  },
+  {
     img: `${NewYork}`,
     title: 'New York City'
   },
   {
-    img: `${TelAviv}`,
-    title: 'Tel Aviv'
+    img: `${LosAngeles}`,
+    title: 'Los Angeles'
   },
   {
-    img: `${Ibiza}`,
-    title: 'Ibiza'
-  }
+    img: `${Oslo}`,
+    title: 'Oslo'
+  },
+
 ];
