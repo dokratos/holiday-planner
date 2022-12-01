@@ -1,5 +1,4 @@
 import { useState } from 'react';
-// Pass URL
 const useFetch = (url) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');

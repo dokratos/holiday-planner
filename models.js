@@ -43,19 +43,21 @@ const deleteOneFavorite = async (userEmail, siteId) => {
   }
 };
 
-const addToList = async (userEmail, siteData, searchValue) => {
+const addToList = async (userEmail, siteData) => {
   try {
     const db = await dbConnect();
     const collection = db.collection('users');
-    const user =  await collection.findOne({ "email": userEmail, "lists.listName": searchValue });
-    console.log(searchValue, 'addtolist - search value')
+    const user =  await collection.findOne({ "email": userEmail, "lists.listName": siteData.city });
+    
     if(!user) {
-      const image = await getCityImage(searchValue);
-      await collection.updateOne({ email: userEmail }, { $addToSet: { lists: { listName: searchValue, image }} });
-    }
+      const image = await getCityImage(siteData.city);
+      await collection.updateOne({ email: userEmail }, { $addToSet: { lists: { listName: siteData.city, image }} });
+    };
+    
     await collection.updateOne(
-      { "email": userEmail, "lists.listName": searchValue }, 
-      { "$addToSet": { "lists.$.sites": siteData} } )
+      { "email": userEmail, "lists.listName": siteData.city }, 
+      { "$addToSet": { "lists.$.sites": siteData} }
+    );
 
     const result = await collection.findOne({ email: userEmail }, {});
     return result.favorites;

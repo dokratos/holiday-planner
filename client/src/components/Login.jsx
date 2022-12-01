@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useFetch from '../hooks/useFetch';
 
-// https://developers.google.com/identity/gsi/web/reference/js-reference
-
 const Login = () => {
   const { handleGoogle, loading, error } = useFetch('/api/login');
 
@@ -16,14 +14,10 @@ const Login = () => {
       });
 
       google.accounts.id.renderButton(document.getElementById('loginDiv'), {
-        // type: "standard",
         theme: 'filled_black',
-        // size: "small",
         text: 'signin_with',
         shape: 'pill'
       });
-
-      // google.accounts.id.prompt()
     }
   }, [handleGoogle]);
 

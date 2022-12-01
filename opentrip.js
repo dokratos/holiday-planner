@@ -46,8 +46,8 @@ const getWiki = async wikiData => {
       return {
         siteId: results.data.xid,
         name: results.data.name,
+        city: results.data.address.city,
         image: results.data.preview?.source,
-        rate: results.data.rate,
         text: results.data.wikipedia_extracts?.text,
         point: results.data.point,
       };

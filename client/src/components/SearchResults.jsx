@@ -21,11 +21,10 @@ const SearchResults = () => {
   const { isLoaded } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY
   });
-
   const { searchValue } = useContext(AppContext);
   const { siteData, setSiteData } = useContext(AppContext);
   const { favorites, setFavorites } = useContext(AppContext);
-
+  const [sitesInLists, setInLists] = useState([]);
   const [map, setMap] = useState(null);
   const [sites, setSites] = useState([]);
   const [markerImage, setMarkerImage] = useState('');
@@ -61,7 +60,6 @@ const SearchResults = () => {
           });
 
           setFavorites(response.data);
-          console.log(response.data, 'responsedat');
         } catch (err) {
           console.error(err);
         }
@@ -88,6 +86,30 @@ const SearchResults = () => {
   }, [searchValue]);
 
   useEffect(() => {
+    if (user) {
+      const getLists = async () => {
+        try {
+          const response = await axios.get('/api/lists', {
+            params: { email: localUser.email }
+          });
+
+          const existSitesInLists = [];
+
+          response.data.forEach((list) => {
+            list.sites.forEach((item) => {
+              existSitesInLists.push(item.siteId);
+            });
+          });
+          setInLists(existSitesInLists);
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      getLists();
+    }
+  }, []);
+
+  useEffect(() => {
     if (isMarkerActive) {
       setIsLoading(true);
       getSiteImage(isMarkerActive);
@@ -107,16 +129,18 @@ const SearchResults = () => {
   };
 
   const handleAddToList = async () => {
-    try {
-      const data = {
-        siteData,
-        // searchValue: searchValue.toLowerCase(),
-        email: localUser.email
-      };
-      console.log(siteData.city);
-      return await axios.patch(`/api/lists/${siteData.city}`, data);
-    } catch (err) {
-      console.error(err);
+    const itemInList = sitesInLists.find((item) => item === siteData.siteId);
+    if (!itemInList) {
+      setInLists([...sitesInLists, siteData.siteId]);
+      try {
+        const data = {
+          siteData,
+          email: localUser.email
+        };
+        return await axios.patch(`/api/lists/${siteData.city}`, data);
+      } catch (err) {
+        console.error(err);
+      }
     }
   };
 
@@ -222,12 +246,19 @@ const SearchResults = () => {
                             <FavoriteIcon />
                           </IconButton>
                           <IconButton
-                            aria-label="share"
-                            sx={{ color: 'green' }}
+                            aria-label="Add to list"
+                            sx={
+                              sitesInLists.findIndex((item) => {
+                                return item === site.properties.xid;
+                              }) >= 0
+                                ? { display: 'none' }
+                                : { color: 'green' }
+                            }
                             onClick={user ? handleAddToList : handleClickOpen}
                           >
                             <AddIcon />
                           </IconButton>
+
                           <Button size="small" sx={{ position: 'absolute', right: 10, bottom: 0 }}>
                             <Link to={`/search/${site.properties.xid}`}>Learn more</Link>
                           </Button>

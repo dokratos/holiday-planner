@@ -14,7 +14,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Image from '../images/image_placeholder.png';
 
 const List = () => {
-  // const { favorites, setFavorites } = useContext(AppContext);
   const { lists, setLists } = useContext(AppContext);
   const user = localStorage.getItem('user');
   const localUser = JSON.parse(user);

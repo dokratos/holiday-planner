@@ -32,7 +32,7 @@ const Site = () => {
   const { siteData, setSiteData } = useContext(AppContext);
   const [isLoading, setIsLoading] = useState(true);
   const [open, setOpen] = useState(false);
-  console.log(siteData, 'site data in sites');
+
   let { site } = useParams();
 
   const user = localStorage.getItem('user');
@@ -159,10 +159,7 @@ const Site = () => {
         width: '100vw',
         display: 'flex',
         flexDirection: 'column',
-        justifyContent: 'center',
-        [theme.breakpoints.up('sm')]: {
-          // margin: '40px 5px'
-        }
+        justifyContent: 'center'
       })}
     >
       <h2 style={{ fontSize: '4.4vw' }}>{siteData.name}</h2>
@@ -249,7 +246,6 @@ const Site = () => {
           </Button>
         </DialogActions>
       </Dialog>
-      {/* </div> */}
     </Box>
   );
 };

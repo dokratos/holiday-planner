@@ -2,11 +2,9 @@ import express from 'express';
 import cors from 'cors';
 import * as path from 'path';
 import {
-  get,
   updateFavorites,
   getFavorites,
   deleteOneFavorite,
-  createUser,
   findUser,
   addToList,
   getLists,
@@ -42,11 +40,6 @@ async function verifyGoogleToken(token) {
     return { error: "Invalid user detected. Please try again" };
   }
 };
-
-// app.get('/', async (req, res) => {
-//   const data = await get();
-//   res.json(data);
-// });
 
 app.get('/api/search/:query', async (req, res) => {
   const city = req.params.query;
@@ -93,7 +86,7 @@ app.patch('/api/list/favorites', async (req, res) => {
 
 app.patch('/api/lists/:listName', async (req, res) => {
   try {
-    const data = await addToList(req.body.email, req.body.siteData, req.body.searchValue);
+    const data = await addToList(req.body.email, req.body.siteData);
     res.json(data);
   } catch(e) {
     console.error(e)
@@ -102,7 +95,7 @@ app.patch('/api/lists/:listName', async (req, res) => {
 
 app.delete('/api/lists/:listName', async (req, res) => {
   try {
-    const data = await deleteList(req.body.email, req.body.listName);
+    await deleteList(req.body.email, req.body.listName);
     res.json();
   } catch(e) {
     console.error(e)
@@ -111,7 +104,7 @@ app.delete('/api/lists/:listName', async (req, res) => {
 
 app.patch('/api/lists/listName/:id', async (req, res) => {
   try {
-    const data = await deleteFromList(req.body.email, req.body.list, req.body.id);
+    await deleteFromList(req.body.email, req.body.list, req.body.id);
     res.json();
   } catch(e) {
     console.error(e)
@@ -167,12 +160,10 @@ app.post("/api/login", async (req, res) => {
   }
 });
 
-  // res.sendFile(path.resolve(__dirname, './client/build', 'index.html'));
 
 if (process.env.NODE_ENV === 'production') {
-  app.get('*', (req, res) => {
+  app.get('*', (_, res) => {
     res.sendFile(path.join(__dirname, '/client/build/index.html'));
-    // app.use(express.static('client/build'));
   });
 }
 

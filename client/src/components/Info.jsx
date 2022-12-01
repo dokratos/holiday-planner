@@ -25,7 +25,6 @@ export default function Info() {
         display: 'flex',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        // margin: '40px 5px',
         [theme.breakpoints.down('sm')]: {
           margin: '15px 5px'
         },
