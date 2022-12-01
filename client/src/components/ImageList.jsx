@@ -44,6 +44,7 @@ export default function StandardImageList() {
     <ImageList
       sx={(theme) => ({
         width: '100%',
+        minHeight: "50vh",
         gridAutoFlow: 'column',
         position: 'relative',
         textAlign: 'center',
