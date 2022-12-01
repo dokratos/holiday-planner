@@ -61,28 +61,47 @@ const Site = () => {
           const response = await axios.get('/api/lists', {
             params: { email: localUser.email }
           });
+          setLists(response.data);            
+          } catch (err) {
+            console.error(err);
+          }
+        };
+        getLists();
+      }
+    }, []);
 
-          setLists(response.data);
-        } catch (err) {
-          console.error(err);
-        }
-      };
-      getLists();
+  const search = [];
+  const city = [];
+
+  useEffect(() => {
+    if (lists.length > 0) {
+      lists.forEach((item) => {
+        item.sites.forEach((siteItem) => {
+          if (siteItem.siteId === site) {
+            search.push(siteItem.siteId);
+            city.push(item.listName);
+          }
+          let siteInList = search.includes(site);
+          console.log(siteInList)
+          setAddToList(!siteInList);
+          return;
+        });
+      });
+      }
+  }, [lists])
+    
+    if (isLoading) {
+      return <>Loading...</>;
     }
-  }, [addToList]);
-
-  if (isLoading) {
-    return <>Loading...</>;
-  }
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+    
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    
+    const handleClose = () => {
+      setOpen(false);
+    };
+    
   const handleAddToFavorites = async () => {
     const favItem = favorites.find((item) => item.siteId === siteData.siteId);
     if (!favItem) {
@@ -110,27 +129,6 @@ const Site = () => {
     }
   };
 
-  const search = [];
-  const city = [];
-
-  if (lists.length > 0) {
-    lists.forEach((item) => {
-      item.sites.forEach((siteItem) => {
-        if (siteItem.siteId === site) {
-          search.push(siteItem.siteId);
-          city.push(item.listName);
-        }
-        return;
-      });
-    });
-  }
-
-  let siteInList = search.includes(site);
-
-  if (siteInList) {
-    setAddToList(false);
-  }
-
   const handleAddToList = async () => {
     try {
       const data = {
@@ -138,7 +136,7 @@ const Site = () => {
         searchValue: searchValue.toLowerCase(),
         email: localUser.email
       };
-      setAddToList(siteInList);
+      setAddToList(false);
       return await axios.patch(`/api/lists/${city[0]}`, data);
     } catch (err) {
       console.error(err);
